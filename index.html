@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Macro Fund Dashboard</title>
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <header class="header">
+
+        <div>
+            <h1>MACRO FUND</h1>
+            <p>Multimercado · Macro Strategy</p>
+        </div>
+
+        <div class="market-status">
+            <span class="status-dot"></span>
+            Mercado monitorado
+        </div>
+
+    </header>
+
+
+    <main>
+
+        <!-- RESUMO -->
+
+        <section class="summary-grid">
+
+            <div class="card">
+                <span class="label">NAV</span>
+                <strong id="nav">R$ 100.000</strong>
+            </div>
+
+            <div class="card">
+                <span class="label">RETORNO</span>
+                <strong id="return">+0,00%</strong>
+            </div>
+
+            <div class="card">
+                <span class="label">P&L HOJE</span>
+                <strong id="daily-pnl">R$ 0,00</strong>
+            </div>
+
+            <div class="card">
+                <span class="label">DRAWDOWN</span>
+                <strong id="drawdown">0,00%</strong>
+            </div>
+
+        </section>
+
+
+        <!-- TESE -->
+
+        <section class="section">
+
+            <div class="section-title">
+                <h2>Tese Macro</h2>
+                <span class="badge positive">FAVORÁVEL</span>
+            </div>
+
+            <div class="thesis">
+
+                <div class="thesis-main">
+
+                    <h3>Desinflação → Flexibilização Monetária</h3>
+
+                    <p>
+                        Nossa principal hipótese é de continuidade do processo
+                        de desinflação no Brasil, permitindo flexibilização
+                        monetária e redução das taxas de juros.
+                    </p>
+
+                </div>
+
+                <div class="thesis-score">
+
+                    <span>Convicção</span>
+
+                    <strong>72</strong>
+
+                    <small>/100</small>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- CARTEIRA -->
+
+        <section class="section">
+
+            <div class="section-title">
+
+                <h2>Carteira</h2>
+
+                <span id="portfolio-date">
+                    Atualização: --
+                </span>
+
+            </div>
+
+
+            <div class="table-container">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+                            <th>Ativo</th>
+                            <th>Categoria</th>
+                            <th>Posição</th>
+                            <th>Peso</th>
+                            <th>P&L</th>
+                            <th>Status</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="portfolio-table">
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+
+        <!-- MACRO -->
+
+        <section class="section">
+
+            <div class="section-title">
+
+                <h2>Macro Monitor</h2>
+
+            </div>
+
+
+            <div class="macro-grid">
+
+                <div class="macro-card">
+
+                    <span>Inflação</span>
+
+                    <strong id="inflation">--</strong>
+
+                    <small id="inflation-status">--</small>
+
+                </div>
+
+
+                <div class="macro-card">
+
+                    <span>Selic</span>
+
+                    <strong id="selic">--</strong>
+
+                    <small id="selic-status">--</small>
+
+                </div>
+
+
+                <div class="macro-card">
+
+                    <span>USD/BRL</span>
+
+                    <strong id="usd">--</strong>
+
+                    <small id="usd-status">--</small>
+
+                </div>
+
+
+                <div class="macro-card">
+
+                    <span>Brent</span>
+
+                    <strong id="brent">--</strong>
+
+                    <small id="brent-status">--</small>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- RISCO -->
+
+        <section class="section">
+
+            <div class="section-title">
+
+                <h2>Risk Monitor</h2>
+
+            </div>
+
+
+            <div class="risk-grid">
+
+                <div class="risk-card">
+
+                    <span>Desinflação</span>
+                    <strong class="positive-text">FAVORÁVEL</strong>
+
+                </div>
+
+
+                <div class="risk-card">
+
+                    <span>Juros</span>
+                    <strong class="positive-text">FAVORÁVEL</strong>
+
+                </div>
+
+
+                <div class="risk-card">
+
+                    <span>Fiscal</span>
+                    <strong class="warning-text">ATENÇÃO</strong>
+
+                </div>
+
+
+                <div class="risk-card">
+
+                    <span>Externo</span>
+                    <strong class="warning-text">ATENÇÃO</strong>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <footer>
+
+        <p>
+            Macro Fund Dashboard · Challenge Safra
+        </p>
+
+        <p id="last-update">
+            Última atualização: --
+        </p>
+
+    </footer>
+
+
+    <script src="js/app.js"></script>
+
+</body>
+
+</html>

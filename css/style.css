@@ -1,0 +1,442 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #0f1115;
+    color: #e8eaed;
+    line-height: 1.5;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 28px 6%;
+
+    border-bottom: 1px solid #252932;
+}
+
+.header h1 {
+    font-size: 24px;
+    letter-spacing: 2px;
+}
+
+.header p {
+    color: #8f96a3;
+    font-size: 14px;
+}
+
+.market-status {
+    color: #aeb4bf;
+    font-size: 13px;
+}
+
+.status-dot {
+    display: inline-block;
+
+    width: 8px;
+    height: 8px;
+
+    background: #4ade80;
+
+    border-radius: 50%;
+
+    margin-right: 6px;
+}
+
+
+main {
+    width: 88%;
+    max-width: 1400px;
+
+    margin: 35px auto;
+}
+
+
+.summary-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    gap: 16px;
+}
+
+
+.card,
+.macro-card,
+.risk-card {
+
+    background: #171a20;
+
+    border: 1px solid #252932;
+
+    border-radius: 8px;
+
+    padding: 22px;
+}
+
+
+.label {
+    display: block;
+
+    color: #858c98;
+
+    font-size: 11px;
+
+    letter-spacing: 1px;
+
+    margin-bottom: 8px;
+}
+
+
+.card strong {
+
+    font-size: 25px;
+
+    font-weight: 600;
+
+}
+
+
+.section {
+
+    margin-top: 35px;
+}
+
+
+.section-title {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    margin-bottom: 15px;
+}
+
+
+.section-title h2 {
+
+    font-size: 18px;
+
+    font-weight: 500;
+
+}
+
+
+.section-title span {
+
+    color: #7e8591;
+
+    font-size: 12px;
+
+}
+
+
+.badge {
+
+    padding: 5px 10px;
+
+    border-radius: 4px;
+
+    font-size: 11px !important;
+
+}
+
+
+.positive {
+
+    background: #173522;
+
+    color: #4ade80 !important;
+
+}
+
+
+.thesis {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    background: #171a20;
+
+    border: 1px solid #252932;
+
+    border-radius: 8px;
+
+    padding: 25px;
+}
+
+
+.thesis-main h3 {
+
+    font-size: 20px;
+
+    margin-bottom: 8px;
+
+}
+
+
+.thesis-main p {
+
+    color: #9299a5;
+
+    max-width: 800px;
+
+    font-size: 14px;
+
+}
+
+
+.thesis-score {
+
+    text-align: center;
+
+    min-width: 120px;
+
+}
+
+
+.thesis-score span {
+
+    display: block;
+
+    color: #858c98;
+
+    font-size: 12px;
+
+}
+
+
+.thesis-score strong {
+
+    font-size: 40px;
+
+}
+
+
+.thesis-score small {
+
+    color: #777e89;
+
+}
+
+
+.table-container {
+
+    overflow-x: auto;
+
+    background: #171a20;
+
+    border: 1px solid #252932;
+
+    border-radius: 8px;
+
+}
+
+
+table {
+
+    width: 100%;
+
+    border-collapse: collapse;
+
+}
+
+
+th {
+
+    text-align: left;
+
+    padding: 15px;
+
+    color: #777e89;
+
+    font-size: 11px;
+
+    text-transform: uppercase;
+
+    letter-spacing: 1px;
+
+    border-bottom: 1px solid #252932;
+
+}
+
+
+td {
+
+    padding: 16px 15px;
+
+    border-bottom: 1px solid #20232a;
+
+    font-size: 13px;
+
+}
+
+
+tr:last-child td {
+
+    border-bottom: none;
+
+}
+
+
+.positive-text {
+
+    color: #4ade80;
+
+}
+
+
+.warning-text {
+
+    color: #facc15;
+
+}
+
+
+.macro-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    gap: 16px;
+
+}
+
+
+.macro-card span {
+
+    display: block;
+
+    color: #858c98;
+
+    font-size: 12px;
+
+    margin-bottom: 5px;
+
+}
+
+
+.macro-card strong {
+
+    display: block;
+
+    font-size: 23px;
+
+}
+
+
+.macro-card small {
+
+    color: #4ade80;
+
+}
+
+
+.risk-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    gap: 16px;
+
+}
+
+
+.risk-card span {
+
+    display: block;
+
+    color: #858c98;
+
+    font-size: 12px;
+
+    margin-bottom: 8px;
+
+}
+
+
+.risk-card strong {
+
+    font-size: 14px;
+
+}
+
+
+footer {
+
+    border-top: 1px solid #252932;
+
+    margin-top: 60px;
+
+    padding: 25px 6%;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    color: #666d78;
+
+    font-size: 11px;
+
+}
+
+
+@media (max-width: 800px) {
+
+    .summary-grid,
+    .macro-grid,
+    .risk-grid {
+
+        grid-template-columns:
+            repeat(2, 1fr);
+
+    }
+
+    .thesis {
+
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        gap: 20px;
+
+    }
+
+}
+
+
+@media (max-width: 500px) {
+
+    .summary-grid,
+    .macro-grid,
+    .risk-grid {
+
+        grid-template-columns: 1fr;
+
+    }
+
+    footer {
+
+        flex-direction: column;
+
+        gap: 8px;
+
+    }
+
+}
