@@ -1,0 +1,100 @@
+{
+    "fund": {
+    "name": "Macro Fund",
+    "start_date": "2026-08-17",
+    "start_price_reference": "CLOSE",
+    "initial_nav": 100000
+    }   ,
+
+    "positions": [
+        {
+            "ticker": "DI1F27",
+            "name": "DI Jan/27",
+            "category": "Juros",
+            "position": "Aplicado",
+            "weight": 0.20,
+            "risk_factor": "IPCA+PRE"
+        },
+
+        {
+            "ticker": "DI1F31",
+            "name": "DI Jan/31",
+            "category": "Juros",
+            "position": "Aplicado",
+            "weight": 0.10,
+            "risk_factor": "IPCA+PRE"
+        },
+
+        {
+            "ticker": "NTNB2031",
+            "name": "NTN-B 2031",
+            "category": "Inflação",
+            "position": "Aplicado",
+            "weight": 0.20,
+            "risk_factor": "IPCA+PRE"
+        },
+
+        {
+            "ticker": "NTNB2050",
+            "name": "NTN-B 2050",
+            "category": "Inflação",
+            "position": "Aplicado",
+            "weight": 0.10,
+            "risk_factor": "IPCA+PRE"
+        },
+
+        {
+            "ticker": "USD",
+            "name": "Dólar",
+            "category": "Câmbio",
+            "position": "Comprado",
+            "weight": 0.15,
+            "risk_factor": "USD"
+        },
+
+        {
+            "ticker": "GGBR4",
+            "name": "Gerdau",
+            "category": "Ações",
+            "position": "Comprado",
+            "weight": 0.09,
+            "risk_factor": "EQUITIES"
+        },
+
+        {
+            "ticker": "PETR4",
+            "name": "Petrobras",
+            "category": "Ações",
+            "position": "Comprado",
+            "weight": 0.04,
+            "risk_factor": "EQUITIES"
+        },
+
+        {
+            "ticker": "ITUB4",
+            "name": "Itaú",
+            "category": "Ações",
+            "position": "Comprado",
+            "weight": 0.04,
+            "risk_factor": "EQUITIES"
+        },
+
+        {
+            "ticker": "SBSP3",
+            "name": "Sabesp",
+            "category": "Ações",
+            "position": "Comprado",
+            "weight": 0.04,
+            "risk_factor": "EQUITIES"
+        },
+
+        {
+            "ticker": "AXIA",
+            "name": "AXIA Energia",
+            "category": "Ações",
+            "position": "Comprado",
+            "weight": 0.04,
+            "risk_factor": "EQUITIES"
+        }
+    ]
+}

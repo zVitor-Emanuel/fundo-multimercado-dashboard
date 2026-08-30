@@ -1,206 +1,275 @@
-const portfolio = [
+let portfolioData = null;
+let marketData = null;
+let historyData = null;
+let macroData = null;
 
-    {
-        ticker: "DI1F27",
-        name: "DI Jan/27",
-        category: "Juros",
-        position: "Aplicado",
-        weight: 20,
-        pnl: 0.00
-    },
 
-    {
-        ticker: "DI1F31",
-        name: "DI Jan/31",
-        category: "Juros",
-        position: "Aplicado",
-        weight: 10,
-        pnl: 0.00
-    },
+// ========================================
+// CARREGAR DADOS
+// ========================================
 
-    {
-        ticker: "NTNB2031",
-        name: "NTN-B 2031",
-        category: "Inflação",
-        position: "Aplicado",
-        weight: 20,
-        pnl: 0.00
-    },
+async function loadData() {
 
-    {
-        ticker: "NTNB2050",
-        name: "NTN-B 2050",
-        category: "Inflação",
-        position: "Aplicado",
-        weight: 10,
-        pnl: 0.00
-    },
+    try {
 
-    {
-        ticker: "USD",
-        name: "Dólar",
-        category: "Câmbio",
-        position: "Comprado",
-        weight: 15,
-        pnl: 0.00
-    },
+        const portfolioResponse =
+            await fetch("config/portfolio.json");
 
-    {
-        ticker: "GGBR4",
-        name: "Gerdau",
-        category: "Ações",
-        position: "Comprado",
-        weight: 9,
-        pnl: 0.00
-    },
+        const marketResponse =
+            await fetch("data/market.json");
 
-    {
-        ticker: "PETR4",
-        name: "Petrobras",
-        category: "Ações",
-        position: "Comprado",
-        weight: 4,
-        pnl: 0.00
-    },
+        const historyResponse =
+            await fetch("data/history.json");
 
-    {
-        ticker: "ITUB4",
-        name: "Itaú",
-        category: "Ações",
-        position: "Comprado",
-        weight: 4,
-        pnl: 0.00
-    },
+        const macroResponse =
+            await fetch("data/macro.json");
 
-    {
-        ticker: "SBSP3",
-        name: "Sabesp",
-        category: "Ações",
-        position: "Comprado",
-        weight: 4,
-        pnl: 0.00
-    },
 
-    {
-        ticker: "AXIA",
-        name: "AXIA Energia",
-        category: "Ações",
-        position: "Comprado",
-        weight: 4,
-        pnl: 0.00
+        portfolioData =
+            await portfolioResponse.json();
+
+        marketData =
+            await marketResponse.json();
+
+        historyData =
+            await historyResponse.json();
+
+        macroData =
+            await macroResponse.json();
+
+
+        initializeDashboard();
+
+    } catch (error) {
+
+        console.error(
+            "Erro ao carregar dados:",
+            error
+        );
+
     }
 
-];
+}
 
+
+// ========================================
+// INICIALIZAR DASHBOARD
+// ========================================
+
+function initializeDashboard() {
+
+    renderPortfolio();
+
+    updateFundInfo();
+
+    updateMacro();
+
+    updateDate();
+
+}
+
+
+// ========================================
+// CARTEIRA
+// ========================================
 
 function renderPortfolio() {
 
     const table =
-        document.getElementById("portfolio-table");
+        document.getElementById(
+            "portfolio-table"
+        );
 
 
     table.innerHTML = "";
 
 
-    portfolio.forEach(asset => {
+    portfolioData.positions.forEach(
+        asset => {
 
-        const row =
-            document.createElement("tr");
-
-
-        const pnlClass =
-            asset.pnl >= 0
-                ? "positive-text"
-                : "warning-text";
+            const row =
+                document.createElement("tr");
 
 
-        row.innerHTML = `
+            row.innerHTML = `
 
-            <td>
-                <strong>${asset.name}</strong>
-                <br>
-                <small>${asset.ticker}</small>
-            </td>
+                <td>
 
-            <td>${asset.category}</td>
+                    <strong>
+                        ${asset.name}
+                    </strong>
 
-            <td>${asset.position}</td>
+                    <br>
 
-            <td>${asset.weight.toFixed(0)}%</td>
+                    <small>
+                        ${asset.ticker}
+                    </small>
 
-            <td class="${pnlClass}">
-                ${asset.pnl >= 0 ? "+" : ""}
-                ${asset.pnl.toFixed(2)}%
-            </td>
-
-            <td>
-                <span class="positive-text">
-                    MONITORANDO
-                </span>
-            </td>
-
-        `;
+                </td>
 
 
-        table.appendChild(row);
+                <td>
+                    ${asset.category}
+                </td>
 
-    });
+
+                <td>
+                    ${asset.position}
+                </td>
+
+
+                <td>
+                    ${(asset.weight * 100).toFixed(0)}%
+                </td>
+
+
+                <td>
+                    --
+                </td>
+
+
+                <td>
+
+                    <span class="positive-text">
+                        MONITORANDO
+                    </span>
+
+                </td>
+
+            `;
+
+
+            table.appendChild(row);
+
+        }
+    );
 
 }
 
+
+// ========================================
+// INFORMAÇÕES DO FUNDO
+// ========================================
+
+function updateFundInfo() {
+
+    const nav =
+        portfolioData.fund.initial_nav;
+
+
+    document.getElementById("nav")
+        .textContent =
+        formatCurrency(nav);
+
+
+    document.getElementById("return")
+        .textContent =
+        "+0,00%";
+
+
+    document.getElementById("daily-pnl")
+        .textContent =
+        formatCurrency(0);
+
+
+    document.getElementById("drawdown")
+        .textContent =
+        "0,00%";
+
+}
+
+
+// ========================================
+// MACRO
+// ========================================
 
 function updateMacro() {
 
     document.getElementById("inflation")
-        .textContent = "4,64%";
+        .textContent = "--";
 
     document.getElementById("inflation-status")
-        .textContent = "Desaceleração";
+        .textContent =
+        "Aguardando dados";
+
 
     document.getElementById("selic")
-        .textContent = "14,00%";
+        .textContent = "--";
 
     document.getElementById("selic-status")
-        .textContent = "Política restritiva";
+        .textContent =
+        "Aguardando dados";
+
 
     document.getElementById("usd")
-        .textContent = "—";
+        .textContent = "--";
 
     document.getElementById("usd-status")
-        .textContent = "Aguardando dados";
+        .textContent =
+        "Aguardando dados";
+
 
     document.getElementById("brent")
-        .textContent = "—";
+        .textContent = "--";
 
     document.getElementById("brent-status")
-        .textContent = "Aguardando dados";
+        .textContent =
+        "Aguardando dados";
 
 }
 
+
+// ========================================
+// DATA
+// ========================================
 
 function updateDate() {
 
-    const now = new Date();
+    const startDate =
+        new Date(
+            portfolioData.fund.start_date
+        );
 
 
-    const formatted =
-        now.toLocaleString("pt-BR");
+    const formattedStartDate =
+        startDate.toLocaleDateString(
+            "pt-BR"
+        );
 
 
-    document.getElementById("last-update")
-        .textContent =
-        `Última atualização: ${formatted}`;
+    document.getElementById(
+        "portfolio-date"
+    ).textContent =
+        `Entrada: ${formattedStartDate}`;
 
 
-    document.getElementById("portfolio-date")
-        .textContent =
-        `Atualização: ${formatted}`;
+    document.getElementById(
+        "last-update"
+    ).textContent =
+        `Data-base: ${formattedStartDate}`;
 
 }
 
 
-renderPortfolio();
+// ========================================
+// FORMATAÇÃO
+// ========================================
 
-updateMacro();
+function formatCurrency(value) {
 
-updateDate();
+    return new Intl.NumberFormat(
+        "pt-BR",
+        {
+            style: "currency",
+            currency: "BRL"
+        }
+    ).format(value);
+
+}
+
+
+// ========================================
+// START
+// ========================================
+
+loadData();
