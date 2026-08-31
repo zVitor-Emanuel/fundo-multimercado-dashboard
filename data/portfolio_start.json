@@ -1,0 +1,72 @@
+{
+    "date": "2026-08-17",
+    "reference": "CLOSE",
+
+    "assets": {
+
+        "GGBR4": {
+            "type": "equity",
+            "weight": 0.09,
+            "entry_price": 24.78
+        },
+
+        "PETR4": {
+            "type": "equity",
+            "weight": 0.04,
+            "entry_price": 42.47
+        },
+
+        "ITUB4": {
+            "type": "equity",
+            "weight": 0.04,
+            "entry_price": 38.38
+        },
+
+        "SBSP3": {
+            "type": "equity",
+            "weight": 0.04,
+            "entry_price": 23.80
+        },
+
+        "AXIA3": {
+            "type": "equity",
+            "weight": 0.04,
+            "entry_price": 50.18
+        },
+
+        "USD": {
+            "type": "fx",
+            "weight": 0.15,
+            "entry_price": 5.2014
+        },
+
+        "DI1F27": {
+            "type": "di_future",
+            "weight": 0.20,
+            "entry_rate": 0.1376,
+            "entry_pu": 95402.41
+        },
+
+        "DI1F31": {
+            "type": "di_future",
+            "weight": 0.10,
+            "entry_rate": 0.1457,
+            "entry_pu": null
+        },
+
+        "NTNB2031": {
+            "type": "ntnb",
+            "weight": 0.20,
+            "entry_rate": null,
+            "entry_pu": null
+        },
+
+        "NTNB2050": {
+            "type": "ntnb",
+            "weight": 0.10,
+            "entry_rate": 0.0760,
+            "entry_pu": 3924.25
+        }
+
+    }
+}
