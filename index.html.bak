@@ -44,15 +44,8 @@
             </div>
 
             <div class="card">
-                <span class="label">P&L ACUMULADO</span>
-
-                <strong id="daily-pnl">
-                    R$ 0,00
-                </strong>
-
-                <small id="pnl-period">
-                    --
-                </small>
+                <span class="label">P&L HOJE</span>
+                <strong id="daily-pnl">R$ 0,00</strong>
             </div>
 
             <div class="card">

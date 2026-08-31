@@ -331,86 +331,91 @@ function renderPortfolio() {
 // ========================================
 // INFORMAÇÕES DO FUNDO
 // ========================================
-// ========================================
-// INFORMAÇÕES DO FUNDO
-// ========================================
 
 function updateFundInfo() {
+
+    let nav;
+    let returnValue;
+    let pnl;
+
+    // ========================================
+    // CARTEIRA COMPLETA
+    // ========================================
+
+    if (portfolioData.status === "OK") {
+
+        nav =
+            portfolioData.current_nav;
+
+        returnValue =
+            portfolioData.return;
+
+        pnl =
+            portfolioData.pnl;
+
+    }
+
+    // ========================================
+    // CARTEIRA PARCIAL
+    // ========================================
+
+    else if (portfolioData.status === "PARCIAL") {
+
+        nav =
+            portfolioData.partial_nav;
+
+        returnValue =
+            portfolioData.partial_return;
+
+        pnl =
+            portfolioData.partial_pnl;
+
+    }
+
+    // ========================================
+    // SEM DADOS
+    // ========================================
+
+    else {
+
+        nav = null;
+        returnValue = null;
+        pnl = null;
+
+    }
+
 
     // ========================================
     // NAV
     // ========================================
 
-    const nav =
-        portfolioData.partial_nav;
-
-
-    // ========================================
-    // RETORNO ACUMULADO
-    // ========================================
-
-    const returnValue =
-        portfolioData.partial_return;
-
-
-    // ========================================
-    // P&L ACUMULADO
-    // ========================================
-
-    const pnl =
-        portfolioData.partial_pnl;
-
-
-    // ========================================
-    // ATUALIZAR NAV
-    // ========================================
-
     document.getElementById("nav")
         .textContent =
-        formatCurrency(nav);
+        nav !== null && nav !== undefined
+            ? formatCurrency(nav)
+            : "--";
 
 
     // ========================================
-    // ATUALIZAR RETORNO
+    // RETORNO
     // ========================================
 
     document.getElementById("return")
         .textContent =
-        formatPercent(returnValue);
+        returnValue !== null && returnValue !== undefined
+            ? formatPercent(returnValue)
+            : "--";
 
 
     // ========================================
-    // ATUALIZAR P&L ACUMULADO
+    // P&L
     // ========================================
 
     document.getElementById("daily-pnl")
         .textContent =
-        formatCurrency(pnl);
-
-
-    // ========================================
-    // PERÍODO DO P&L
-    // ========================================
-
-    const startDate =
-        new Date(
-            portfolioData.start_date + "T00:00:00"
-        );
-
-    const currentDate =
-        new Date(
-            portfolioData.current_date + "T00:00:00"
-        );
-
-    const formattedStartDate =
-        startDate.toLocaleDateString("pt-BR");
-
-    const formattedCurrentDate =
-        currentDate.toLocaleDateString("pt-BR");
-
-    document.getElementById("pnl-period")
-        .textContent =
-        `${formattedStartDate} → ${formattedCurrentDate}`;
+        pnl !== null && pnl !== undefined
+            ? formatCurrency(pnl)
+            : "--";
 
 
     // ========================================
@@ -422,6 +427,7 @@ function updateFundInfo() {
         "N/D";
 
 }
+
 
 // ========================================
 // MACRO
