@@ -1,5 +1,7 @@
 import json
+import math
 from pathlib import Path
+from datetime import datetime
 
 import yfinance as yf
 
@@ -10,8 +12,6 @@ import yfinance as yf
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 HISTORY_FILE = BASE_DIR / "data" / "history.json"
-
-from datetime import datetime
 
 START_DATE = "2026-08-17"
 END_DATE = datetime.now().strftime("%Y-%m-%d")
@@ -27,16 +27,38 @@ ASSETS = {
 
 
 # =========================
+# SANITIZAR — remove NaN/Inf de qualquer objeto aninhado
+# =========================
+
+def sanitize(obj):
+    if isinstance(obj, float):
+        return None if (math.isnan(obj) or math.isinf(obj)) else obj
+    if isinstance(obj, dict):
+        return {k: sanitize(v) for k, v in obj.items()}
+    if isinstance(obj, list):
+        return [sanitize(v) for v in obj]
+    return obj
+
+
+# =========================
 # CARREGAR HISTORY
 # =========================
 
 with open(HISTORY_FILE, "r", encoding="utf-8") as file:
     history = json.load(file)
 
-
 # Garantir estrutura
 if "assets" not in history:
     history["assets"] = {}
+
+# Limpar NaN que possam existir de execuções anteriores
+history = sanitize(history)
+
+# Remover entradas None (preços inválidos já salvos)
+for ticker_key, asset in history["assets"].items():
+    asset["prices"] = {
+        d: p for d, p in asset["prices"].items() if p is not None
+    }
 
 
 # =========================
@@ -88,24 +110,18 @@ for ticker, yf_ticker in ASSETS.items():
 
     for date, price in close.items():
 
-        # Ignorar sábados e domingos
         if date.weekday() >= 5:
             continue
 
         price = float(price)
 
-        # yfinance retorna NaN para dias sem negociação — ignorar
-        import math
+        # NaN/Inf não são JSON válidos — descartar
         if math.isnan(price) or math.isinf(price):
             continue
 
         date_str = date.strftime("%Y-%m-%d")
-
         history["assets"][ticker]["prices"][date_str] = price
-
-        print(
-            f"  {date_str}: R$ {price:.2f}"
-        )
+        print(f"  {date_str}: R$ {price:.2f}")
 
 
 # =========================
