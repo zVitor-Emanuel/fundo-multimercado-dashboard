@@ -1,13 +1,13 @@
 {
-    "timestamp": "2026-09-04T10:43:13.502341",
+    "timestamp": "2026-09-04T15:54:32.221146",
     "start_date": "2026-08-17",
     "initial_nav": 100000,
     "covered_weight": 1.1,
     "missing_weight": 0.0,
     "status": "COMPLETO",
-    "partial_return": 0.02462199727786158,
-    "partial_nav": 102462.19972778617,
-    "partial_pnl": 2462.1997277861665,
+    "partial_return": 0.02385331443340682,
+    "partial_nav": 102385.33144334068,
+    "partial_pnl": 2385.3314433406777,
     "drawdown": -0.00763320000000007,
     "nav_history": {
         "2026-08-17": 100000.0,
@@ -23,7 +23,7 @@
         "2026-08-31": 100764.22,
         "2026-09-01": 101243.42,
         "2026-09-02": 102435.63,
-        "2026-09-03": 102462.2
+        "2026-09-03": 102385.33
     },
     "positions": [
         {
@@ -103,11 +103,11 @@
             "position": "Comprado",
             "weight": 0.09,
             "entry_price": 24.780000686645508,
-            "current_price": 25.420000076293945,
+            "current_price": 25.139999389648438,
             "entry_date": "2026-08-17",
-            "current_date": "2026-09-02",
-            "return": 0.025827254718089998,
-            "contribution": 0.0023244529246280996,
+            "current_date": "2026-09-03",
+            "return": 0.014527792293280273,
+            "contribution": 0.0013075013063952245,
             "status": "OK"
         },
         {
@@ -117,11 +117,11 @@
             "position": "Comprado",
             "weight": 0.04,
             "entry_price": 42.470001220703125,
-            "current_price": 48.20000076293945,
+            "current_price": 47.560001373291016,
             "entry_date": "2026-08-17",
-            "current_date": "2026-09-02",
-            "return": 0.13491875153144783,
-            "contribution": 0.005396750061257913,
+            "current_date": "2026-09-03",
+            "return": 0.11984930554008644,
+            "contribution": 0.0047939722216034574,
             "status": "OK"
         },
         {
@@ -131,11 +131,11 @@
             "position": "Comprado",
             "weight": 0.04,
             "entry_price": 38.380001068115234,
-            "current_price": 41.40999984741211,
+            "current_price": 41.91999816894531,
             "entry_date": "2026-08-17",
-            "current_date": "2026-09-02",
-            "return": 0.0789473344182392,
-            "contribution": 0.0031578933767295683,
+            "current_date": "2026-09-03",
+            "return": 0.09223546123793591,
+            "contribution": 0.0036894184495174366,
             "status": "OK"
         },
         {
@@ -145,11 +145,11 @@
             "position": "Comprado",
             "weight": 0.04,
             "entry_price": 23.799999237060547,
-            "current_price": 26.149999618530273,
+            "current_price": 26.25,
             "entry_date": "2026-08-17",
-            "current_date": "2026-09-02",
-            "return": 0.09873951499168054,
-            "contribution": 0.0039495805996672215,
+            "current_date": "2026-09-03",
+            "return": 0.10294121182678007,
+            "contribution": 0.004117648473071203,
             "status": "OK"
         },
         {
@@ -159,11 +159,11 @@
             "position": "Comprado",
             "weight": 0.04,
             "entry_price": 50.18000030517578,
-            "current_price": 55.560001373291016,
+            "current_price": 55.75,
             "entry_date": "2026-08-17",
-            "current_date": "2026-09-02",
-            "return": 0.10721405012746321,
-            "contribution": 0.0042885620050985285,
+            "current_date": "2026-09-03",
+            "return": 0.1110003918084812,
+            "contribution": 0.004440015672339248,
             "status": "OK"
         }
     ]
