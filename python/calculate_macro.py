@@ -292,8 +292,23 @@ def main():
 
     output = calcular(macro)
 
+    import math
+
+    def sanitize(obj):
+        if isinstance(obj, float):
+            if math.isnan(obj) or math.isinf(obj):
+                return None
+            return obj
+        if isinstance(obj, dict):
+            return {k: sanitize(v) for k, v in obj.items()}
+        if isinstance(obj, list):
+            return [sanitize(v) for v in obj]
+        return obj
+
+    output = sanitize(output)
+
     with open(OUTPUT_FILE, "w", encoding="utf-8") as file:
-        json.dump(output, file, indent=4, ensure_ascii=False)
+        json.dump(output, file, indent=4, ensure_ascii=False, allow_nan=False)
 
     score = output["tese_score"]
     print(f"\nTese Score: {score}/100  [{output['tese_status'].upper()}]")

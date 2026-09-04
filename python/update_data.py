@@ -92,9 +92,14 @@ for ticker, yf_ticker in ASSETS.items():
         if date.weekday() >= 5:
             continue
 
-        date_str = date.strftime("%Y-%m-%d")
-
         price = float(price)
+
+        # yfinance retorna NaN para dias sem negociação — ignorar
+        import math
+        if math.isnan(price) or math.isinf(price):
+            continue
+
+        date_str = date.strftime("%Y-%m-%d")
 
         history["assets"][ticker]["prices"][date_str] = price
 
@@ -113,7 +118,8 @@ with open(HISTORY_FILE, "w", encoding="utf-8") as file:
         history,
         file,
         indent=4,
-        ensure_ascii=False
+        ensure_ascii=False,
+        allow_nan=False
     )
 
 
