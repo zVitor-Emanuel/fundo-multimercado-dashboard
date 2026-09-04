@@ -1,6 +1,6 @@
 {
-    "timestamp": "2026-09-04T15:54:32.247808",
-    "tese_score": 74.5,
+    "timestamp": "2026-09-04T22:52:50.824307",
+    "tese_score": 73.6,
     "tese_status": "verde",
     "fatores": {
         "desinflacao": {
@@ -18,7 +18,7 @@
         "cambio_fiscal": {
             "label": "Câmbio / Fiscal",
             "peso": 0.2,
-            "score": 7.9077499999999965,
+            "score": 7.450464285714274,
             "status": "verde"
         },
         "externo": {
@@ -60,10 +60,10 @@
             "direcao_favoravel": "queda",
             "data_inicial": "2026-08-17",
             "valor_inicial": 5.2014,
-            "data_atual": "2026-09-03",
-            "valor_atual": 5.0962,
-            "delta": -0.10519999999999996,
-            "sub_score": 8.719999999999999
+            "data_atual": "2026-09-04",
+            "valor_atual": 5.1253,
+            "delta": -0.07609999999999939,
+            "sub_score": 7.888571428571412
         },
         "di_jan27": {
             "label": "DI Jan/27",
