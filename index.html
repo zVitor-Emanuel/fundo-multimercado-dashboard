@@ -4,273 +4,160 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>KAIROOS FVS CAPITAL</title>
-
+    <title>KAIROS · FVS Capital</title>
     <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 </head>
 
 <body>
 
     <header class="header">
-
         <div>
             <h1>FVS CAPITAL</h1>
-            <p>KAIROS · Curva de Juros</p>
+            <p>KAIROS · FIM Direcional Juros</p>
         </div>
-
         <div class="market-status">
             <span class="status-dot"></span>
-            Mercado monitorado
+            Monitoramento ativo
         </div>
-
     </header>
-
 
     <main>
 
-        <!-- RESUMO -->
-
+        <!-- ── RESUMO DO FUNDO ── -->
         <section class="summary-grid">
-
             <div class="card">
                 <span class="label">NAV</span>
-                <strong id="nav">R$ 100.000</strong>
+                <strong id="nav">—</strong>
             </div>
-
             <div class="card">
-                <span class="label">RETORNO</span>
-                <strong id="return">+0,00%</strong>
+                <span class="label">RETORNO ACUMULADO</span>
+                <strong id="return">—</strong>
+                <small id="pnl-period">—</small>
             </div>
-
             <div class="card">
-                <span class="label">P&L ACUMULADO</span>
-
-                <strong id="daily-pnl">
-                    R$ 0,00
-                </strong>
-
-                <small id="pnl-period">
-                    --
-                </small>
+                <span class="label">P&amp;L ACUMULADO</span>
+                <strong id="daily-pnl">—</strong>
             </div>
-
             <div class="card">
-                <span class="label">DRAWDOWN</span>
-                <strong id="drawdown">0,00%</strong>
+                <span class="label">DRAWDOWN MÁXIMO</span>
+                <strong id="drawdown">—</strong>
             </div>
-
         </section>
 
 
-        <!-- TESE -->
-
+        <!-- ── NAV HISTÓRICO ── -->
         <section class="section">
-
             <div class="section-title">
-                <h2>Tese Macro</h2>
-                <span class="badge positive">FAVORÁVEL</span>
+                <h2>Evolução do NAV</h2>
+                <span id="portfolio-date">—</span>
             </div>
+            <div class="chart-card">
+                <canvas id="navChart" height="240"></canvas>
+            </div>
+        </section>
 
+
+        <!-- ── TESE DO FUNDO ── -->
+        <section class="section" id="section-tese">
+            <div class="section-title">
+                <h2>Tese do Fundo</h2>
+                <span class="badge" id="tese-badge">—</span>
+            </div>
             <div class="thesis">
-
                 <div class="thesis-main">
-
-                    <h3>Desinflação → Flexibilização Monetária</h3>
-
+                    <h3>Desinflação → Flexibilização Monetária → Reprecificação</h3>
                     <p>
-                        Nossa principal hipótese é de continuidade do processo
-                        de desinflação no Brasil, permitindo flexibilização
-                        monetária e redução das taxas de juros.
+                        O ciclo de corte da Selic, sustentado pela desinflação gradual, reprecifica
+                        os ativos brasileiros sensíveis a juros. Posicionamos a carteira para capturar
+                        esse movimento via DI intermediários/longos, NTN-B e ações de alta geração de
+                        caixa, com hedge cambial como contrapartida de risco.
                     </p>
-
+                    <div class="tese-indicators" id="tese-confirma-ameaca"></div>
                 </div>
-
                 <div class="thesis-score">
-
-                    <span>Convicção</span>
-
-                    <strong>72</strong>
-
+                    <span>Tese Score</span>
+                    <strong id="tese-score">—</strong>
                     <small>/100</small>
-
+                    <div class="score-bar-wrap">
+                        <div class="score-bar-fill" id="score-bar"></div>
+                    </div>
                 </div>
-
             </div>
-
         </section>
 
 
-        <!-- CARTEIRA -->
-
+        <!-- ── CARTEIRA ── -->
         <section class="section">
-
             <div class="section-title">
-
                 <h2>Carteira</h2>
-
-                <span id="portfolio-date">
-                    Atualização: --
-                </span>
-
+                <span>Posições atuais</span>
             </div>
-
-
             <div class="table-container">
-
                 <table>
-
                     <thead>
-
                         <tr>
                             <th>Ativo</th>
-                            <th>Categoria</th>
+                            <th>Cat.</th>
                             <th>Posição</th>
                             <th>Peso</th>
-                            <th>P&L</th>
-                            <th>Status</th>
+                            <th>Preço entrada</th>
+                            <th>Preço atual</th>
+                            <th>P&amp;L ativo</th>
+                            <th>Contribuição</th>
+                            <th>Função na tese</th>
                         </tr>
-
                     </thead>
-
-                    <tbody id="portfolio-table">
-
-                    </tbody>
-
+                    <tbody id="portfolio-table"></tbody>
                 </table>
-
             </div>
-
         </section>
 
 
-        <!-- MACRO -->
-
-        <section class="section">
-
+        <!-- ── ATTRIBUTION ── -->
+        <section class="section" id="section-attribution">
             <div class="section-title">
-
-                <h2>Macro Monitor</h2>
-
+                <h2>Attribution</h2>
+                <span>Contribuição por posição para o retorno do fundo</span>
             </div>
-
-
-            <div class="macro-grid">
-
-                <div class="macro-card">
-
-                    <span>Inflação</span>
-
-                    <strong id="inflation">--</strong>
-
-                    <small id="inflation-status">--</small>
-
-                </div>
-
-
-                <div class="macro-card">
-
-                    <span>Selic</span>
-
-                    <strong id="selic">--</strong>
-
-                    <small id="selic-status">--</small>
-
-                </div>
-
-
-                <div class="macro-card">
-
-                    <span>USD/BRL</span>
-
-                    <strong id="usd">--</strong>
-
-                    <small id="usd-status">--</small>
-
-                </div>
-
-
-                <div class="macro-card">
-
-                    <span>Brent</span>
-
-                    <strong id="brent">--</strong>
-
-                    <small id="brent-status">--</small>
-
-                </div>
-
+            <div id="attribution-bars"></div>
+            <div class="attribution-total" style="margin-top:12px;">
+                Retorno total do fundo: <strong id="attribution-total">—</strong>
             </div>
-
         </section>
 
 
-        <!-- RISCO -->
-
-        <section class="section">
-
+        <!-- ── PAINEL MACRO ── -->
+        <section class="section" id="section-macro">
             <div class="section-title">
+                <h2>Painel Macro</h2>
+                <span id="macro-date">—</span>
+            </div>
+            <div class="macro-grid" id="macro-grid"></div>
+        </section>
 
+
+
+
+
+        <!-- ── RISK MONITOR ── -->
+        <section class="section" id="section-risk">
+            <div class="section-title">
                 <h2>Risk Monitor</h2>
-
+                <span>Score calculado por regras transparentes</span>
             </div>
-
-
-            <div class="risk-grid">
-
-                <div class="risk-card">
-
-                    <span>Desinflação</span>
-                    <strong class="positive-text">FAVORÁVEL</strong>
-
-                </div>
-
-
-                <div class="risk-card">
-
-                    <span>Juros</span>
-                    <strong class="positive-text">FAVORÁVEL</strong>
-
-                </div>
-
-
-                <div class="risk-card">
-
-                    <span>Fiscal</span>
-                    <strong class="warning-text">ATENÇÃO</strong>
-
-                </div>
-
-
-                <div class="risk-card">
-
-                    <span>Externo</span>
-                    <strong class="warning-text">ATENÇÃO</strong>
-
-                </div>
-
-            </div>
-
+            <div class="risk-factors" id="risk-factors"></div>
         </section>
 
     </main>
 
-
     <footer>
-
-        <p>
-            Macro Fund Dashboard · Challenge Safra
-        </p>
-
-        <p id="last-update">
-            Última atualização: --
-        </p>
-
+        <p>Kairos FIM Direcional Juros · FVS Capital · Challenge Safra Top Gestor</p>
+        <p id="last-update">Última atualização: —</p>
     </footer>
 
-
+    <script src="js/charts.js"></script>
     <script src="js/app.js"></script>
 
 </body>
-
 </html>

@@ -1,0 +1,2 @@
+yfinance>=1.7.0
+pyield>=0.56.1

@@ -11,8 +11,10 @@ import yfinance as yf
 BASE_DIR = Path(__file__).resolve().parent.parent
 HISTORY_FILE = BASE_DIR / "data" / "history.json"
 
+from datetime import datetime
+
 START_DATE = "2026-08-17"
-END_DATE = "2026-09-01"
+END_DATE = datetime.now().strftime("%Y-%m-%d")
 
 ASSETS = {
     "GGBR4": "GGBR4.SA",

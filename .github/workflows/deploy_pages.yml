@@ -1,0 +1,56 @@
+name: Deploy no GitHub Pages
+
+on:
+  # ── dispara após o workflow de dados terminar ───────────
+  workflow_run:
+    workflows: ["Atualizar dados do fundo"]
+    types: [completed]
+
+  # ── também dispara em push direto na main ───────────────
+  push:
+    branches: [main]
+
+  # ── disparo manual ──────────────────────────────────────
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    name: Publicar no GitHub Pages
+    runs-on: ubuntu-latest
+
+    # só executa se o workflow de dados foi bem-sucedido
+    # (ou se veio de push/workflow_dispatch, onde não há conclusão prévia)
+    if: >
+      github.event_name != 'workflow_run' ||
+      github.event.workflow_run.conclusion == 'success'
+
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+
+      - name: Checkout do repositório
+        uses: actions/checkout@v4
+
+      # garante os dados mais recentes (após o update_data commitar)
+      - name: Pull dos dados mais recentes
+        run: git pull --rebase
+
+      - name: Configurar GitHub Pages
+        uses: actions/configure-pages@v4
+
+      - name: Fazer upload do site
+        uses: actions/upload-pages-artifact@v3
+        with:
+          # publica tudo na raiz (index.html, css/, js/, data/)
+          path: "."
+
+      - name: Deploy no GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

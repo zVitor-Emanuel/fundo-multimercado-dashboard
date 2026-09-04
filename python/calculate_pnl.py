@@ -202,6 +202,81 @@ else:
 
 
 # ========================================
+# NAV HISTÓRICO DIÁRIO
+# Reconstrói o retorno do fundo para cada
+# data de pregão desde o início.
+# ========================================
+
+# Coleta todas as datas disponíveis em todos os ativos
+all_dates = set()
+for position in positions:
+    ticker = position["ticker"]
+    asset = history["assets"].get(ticker)
+    if asset:
+        all_dates.update(asset["prices"].keys())
+
+all_dates = sorted(d for d in all_dates if d >= start_date)
+
+nav_history = {}
+
+for date in all_dates:
+
+    daily_return = 0.0
+    daily_covered = 0.0
+
+    for position in positions:
+
+        ticker = position["ticker"]
+        weight = position["weight"]
+        asset  = history["assets"].get(ticker)
+
+        if asset is None:
+            continue
+
+        prices      = asset["prices"]
+        entry_price = prices.get(start_date)
+
+        if entry_price is None:
+            continue
+
+        # usa o preço do dia, ou o mais recente disponível até esta data
+        available = [d for d in prices if start_date <= d <= date]
+
+        if not available:
+            continue
+
+        price_on_date = prices[max(available)]
+        ret = (price_on_date / entry_price) - 1
+
+        daily_return  += ret * weight
+        daily_covered += weight
+
+    if daily_covered > 0:
+        nav_on_date = initial_nav * (1 + daily_return)
+        nav_history[date] = round(nav_on_date, 2)
+
+
+# ========================================
+# DRAWDOWN MÁXIMO
+# ========================================
+
+drawdown = 0.0
+peak     = initial_nav
+
+for date in sorted(nav_history):
+
+    nav = nav_history[date]
+
+    if nav > peak:
+        peak = nav
+
+    dd = (nav - peak) / peak
+
+    if dd < drawdown:
+        drawdown = dd
+
+
+# ========================================
 # OUTPUT
 # ========================================
 
@@ -224,6 +299,10 @@ portfolio = {
     "partial_nav": partial_nav,
 
     "partial_pnl": partial_pnl,
+
+    "drawdown": drawdown,
+
+    "nav_history": nav_history,
 
     "positions": results
 }
@@ -259,6 +338,8 @@ print()
 print(f"Retorno parcial:  {total_return:+.4%}")
 print(f"NAV parcial:      R$ {partial_nav:,.2f}")
 print(f"P&L parcial:      R$ {partial_pnl:,.2f}")
+print(f"Drawdown máx:     {drawdown:.4%}")
+print(f"Datas no NAV:     {len(nav_history)}")
 
 print()
 

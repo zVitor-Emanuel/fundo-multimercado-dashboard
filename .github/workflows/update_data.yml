@@ -1,0 +1,73 @@
+name: Atualizar dados do fundo
+
+on:
+  # ── disparo automático ──────────────────────────────────
+  # 12h00 UTC = 09h00 BRT (antes da abertura)
+  # 21h00 UTC = 18h00 BRT (após o fechamento)
+  schedule:
+    - cron: "0 12 * * 1-5"
+    - cron: "0 21 * * 1-5"
+
+  # ── disparo manual pela aba Actions ────────────────────
+  workflow_dispatch:
+
+jobs:
+  update:
+    name: Buscar dados e recalcular
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write   # necessário para o git push
+
+    steps:
+
+      # ── 1. checkout ──────────────────────────────────────
+      - name: Checkout do repositório
+        uses: actions/checkout@v4
+
+      # ── 2. Python ────────────────────────────────────────
+      - name: Configurar Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # ── 3. dependências ──────────────────────────────────
+      - name: Instalar dependências
+        run: pip install -r python/requirements.txt
+
+      # ── 4. pipeline de dados ─────────────────────────────
+      - name: Buscar preços de ações e dólar (yfinance)
+        run: python python/update_data.py
+
+      - name: Buscar DI e NTN-B (pyield / B3 + ANBIMA)
+        run: python python/fetch_fixed_income.py
+
+      - name: Buscar indicadores macro
+        run: python python/fetch_macro.py
+
+      - name: Calcular P&L e NAV histórico
+        run: python python/calculate_pnl.py
+
+      - name: Calcular Tese Score e macro_output
+        run: python python/calculate_macro.py
+
+      # ── 5. commit e push ─────────────────────────────────
+      - name: Commit dos dados atualizados
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          # adiciona só os JSONs gerados — nunca código
+          git add data/history.json \
+                  data/market.json \
+                  data/macro.json \
+                  data/portfolio.json \
+                  data/macro_output.json
+
+          # verifica se há mudanças antes de commitar
+          if git diff --cached --quiet; then
+            echo "Nenhuma mudança nos dados. Nada para commitar."
+          else
+            git commit -m "chore(data): atualização automática $(date -u '+%Y-%m-%d %H:%M UTC')"
+            git push
+          fi

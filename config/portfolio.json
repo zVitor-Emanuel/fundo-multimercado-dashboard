@@ -12,7 +12,7 @@
             "name": "DI Jan/27",
             "category": "Juros",
             "position": "Aplicado",
-            "weight": 0.20,
+            "weight": 0.25,
             "risk_factor": "IPCA+PRE"
         },
 
@@ -21,7 +21,7 @@
             "name": "DI Jan/31",
             "category": "Juros",
             "position": "Aplicado",
-            "weight": 0.10,
+            "weight": 0.15,
             "risk_factor": "IPCA+PRE"
         },
 

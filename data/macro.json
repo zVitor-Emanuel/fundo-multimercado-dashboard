@@ -1,4 +1,85 @@
 {
-    "timestamp": null,
-    "indicators": {}
+  "indicators": {
+    "ipca_mensal": {
+      "label": "IPCA (mensal)",
+      "direcao_favoravel": "queda",
+      "series": {
+        "2026-06": 0.0015,
+        "2026-07": 0.0007
+      }
+    },
+    "selic_meta": {
+      "label": "Selic Meta",
+      "direcao_favoravel": "queda",
+      "series": {
+        "2026-08-17": 0.1425,
+        "2026-09-02": 0.14
+      }
+    },
+    "usd_brl": {
+      "label": "USD/BRL (PTAX)",
+      "direcao_favoravel": "queda",
+      "series": {
+        "2026-08-17": 5.72,
+        "2026-08-18": 5.68,
+        "2026-09-02": 5.8
+      }
+    },
+    "di_jan27": {
+      "label": "DI Jan/27",
+      "direcao_favoravel": "queda",
+      "series": {
+        "2026-08-17": 0.1377,
+        "2026-09-02": 0.134
+      }
+    },
+    "di_jan31": {
+      "label": "DI Jan/31",
+      "direcao_favoravel": "queda",
+      "series": {
+        "2026-08-17": 0.14622,
+        "2026-09-02": 0.142
+      }
+    },
+    "ntnb_2031": {
+      "label": "NTN-B 2031",
+      "direcao_favoravel": "queda",
+      "series": {
+        "2026-08-17": 0.08144,
+        "2026-09-02": 0.0795
+      }
+    },
+    "ntnb_2050": {
+      "label": "NTN-B 2050",
+      "direcao_favoravel": "queda",
+      "series": {
+        "2026-08-17": 0.07539,
+        "2026-09-02": 0.077
+      }
+    },
+    "brent": {
+      "label": "Brent",
+      "direcao_favoravel": "queda",
+      "series": {
+        "2026-08-17": 82.0,
+        "2026-09-02": 88.5
+      }
+    },
+    "treasury_10y": {
+      "label": "US Treasury 10Y",
+      "direcao_favoravel": "queda",
+      "series": {
+        "2026-08-17": 0.0445,
+        "2026-09-02": 0.0452
+      }
+    },
+    "ibovespa": {
+      "label": "Ibovespa",
+      "direcao_favoravel": "alta",
+      "series": {
+        "2026-08-17": 135000,
+        "2026-09-02": 133500
+      }
+    }
+  }
 }
