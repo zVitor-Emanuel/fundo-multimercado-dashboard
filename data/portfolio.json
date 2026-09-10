@@ -1,5 +1,5 @@
 {
-    "timestamp": "2026-09-09T23:03:38.996827",
+    "timestamp": "2026-09-10T15:58:24.188572",
     "start_date": "2026-08-17",
     "initial_nav": 100000,
     "selic_serie": {
@@ -26,14 +26,15 @@
         "2026-09-06": 0.14,
         "2026-09-07": 0.14,
         "2026-09-08": 0.14,
-        "2026-09-09": 0.14
+        "2026-09-09": 0.14,
+        "2026-09-10": 0.14
     },
     "covered_weight": 1.1,
     "missing_weight": 0.0,
     "status": "COMPLETO",
-    "partial_return": 0.034896900099480856,
-    "partial_nav": 103489.69000994808,
-    "partial_pnl": 3489.6900099480854,
+    "partial_return": 0.029523979672209936,
+    "partial_nav": 102952.397967221,
+    "partial_pnl": 2952.3979672209935,
     "drawdown": -0.0077666394836944175,
     "nav_history": {
         "2026-08-17": 100295.63,
@@ -52,7 +53,8 @@
         "2026-09-03": 102612.43,
         "2026-09-04": 102742.46,
         "2026-09-07": 102814.86,
-        "2026-09-08": 103489.69
+        "2026-09-08": 103489.69,
+        "2026-09-09": 102952.4
     },
     "positions": [
         {
@@ -62,12 +64,12 @@
             "position": "Aplicado",
             "weight": 0.25,
             "entry_price": 95301.72,
-            "current_price": 96088.03,
+            "current_price": 96136.32,
             "entry_date": "2026-08-17",
-            "current_date": "2026-09-08",
-            "return": 0.00041885573001964596,
-            "contribution": 0.00010471393250491149,
-            "pnl": 10.471393250491149,
+            "current_date": "2026-09-09",
+            "return": 0.00040118248066507397,
+            "contribution": 0.00010029562016626849,
+            "pnl": 10.02956201662685,
             "status": "OK"
         },
         {
@@ -77,12 +79,12 @@
             "position": "Aplicado",
             "weight": 0.15,
             "entry_price": 55297.02,
-            "current_price": 57272.63,
+            "current_price": 56897.25,
             "entry_date": "2026-08-17",
-            "current_date": "2026-09-08",
-            "return": 0.02783255936119683,
-            "contribution": 0.0041748839041795245,
-            "pnl": 417.4883904179524,
+            "current_date": "2026-09-09",
+            "return": 0.020505458494204837,
+            "contribution": 0.003075818774130726,
+            "pnl": 307.58187741307256,
             "status": "OK"
         },
         {
@@ -92,12 +94,12 @@
             "position": "Aplicado",
             "weight": 0.2,
             "entry_price": 4445.45023,
-            "current_price": 4522.806598,
+            "current_price": 4519.853824,
             "entry_date": "2026-08-17",
-            "current_date": "2026-09-08",
-            "return": 0.017401244867834176,
-            "contribution": 0.003480248973566835,
-            "pnl": 348.0248973566835,
+            "current_date": "2026-09-09",
+            "return": 0.01673702103285035,
+            "contribution": 0.00334740420657007,
+            "pnl": 334.740420657007,
             "status": "OK"
         },
         {
@@ -107,12 +109,12 @@
             "position": "Aplicado",
             "weight": 0.1,
             "entry_price": 3978.214021,
-            "current_price": 4052.604789,
+            "current_price": 4036.023182,
             "entry_date": "2026-08-17",
-            "current_date": "2026-09-08",
-            "return": 0.04826255303936781,
-            "contribution": 0.004826255303936781,
-            "pnl": 482.6255303936781,
+            "current_date": "2026-09-09",
+            "return": 0.044094449736611877,
+            "contribution": 0.0044094449736611875,
+            "pnl": 440.94449736611875,
             "status": "OK"
         },
         {
@@ -122,12 +124,12 @@
             "position": "Comprado",
             "weight": 0.15,
             "entry_price": 5.221700191497803,
-            "current_price": 5.126699924468994,
+            "current_price": 5.084799766540527,
             "entry_date": "2026-08-17",
-            "current_date": "2026-09-08",
-            "return": -0.01819335916364795,
-            "contribution": -0.0027290038745471923,
-            "pnl": -272.90038745471924,
+            "current_date": "2026-09-09",
+            "return": -0.026217595790003934,
+            "contribution": -0.00393263936850059,
+            "pnl": -393.263936850059,
             "status": "OK"
         },
         {
@@ -137,12 +139,12 @@
             "position": "Comprado",
             "weight": 0.09,
             "entry_price": 24.780000686645508,
-            "current_price": 25.700000762939453,
+            "current_price": 25.40999984741211,
             "entry_date": "2026-08-17",
-            "current_date": "2026-09-08",
-            "return": 0.0371267171428995,
-            "contribution": 0.003341404542860955,
-            "pnl": 334.1404542860955,
+            "current_date": "2026-09-09",
+            "return": 0.02542369424170854,
+            "contribution": 0.0022881324817537684,
+            "pnl": 228.81324817537686,
             "status": "OK"
         },
         {
@@ -152,12 +154,12 @@
             "position": "Comprado",
             "weight": 0.04,
             "entry_price": 42.470001220703125,
-            "current_price": 48.09000015258789,
+            "current_price": 48.41999816894531,
             "entry_date": "2026-08-17",
-            "current_date": "2026-09-08",
-            "return": 0.13232867366024825,
-            "contribution": 0.00529314694640993,
-            "pnl": 529.314694640993,
+            "current_date": "2026-09-09",
+            "return": 0.14009881745286368,
+            "contribution": 0.005603952698114547,
+            "pnl": 560.3952698114547,
             "status": "OK"
         },
         {
@@ -167,12 +169,12 @@
             "position": "Comprado",
             "weight": 0.04,
             "entry_price": 38.380001068115234,
-            "current_price": 42.43000030517578,
+            "current_price": 41.59000015258789,
             "entry_date": "2026-08-17",
-            "current_date": "2026-09-08",
-            "return": 0.10552368745047125,
-            "contribution": 0.004220947498018849,
-            "pnl": 422.094749801885,
+            "current_date": "2026-09-09",
+            "return": 0.08363728491762368,
+            "contribution": 0.003345491396704947,
+            "pnl": 334.5491396704947,
             "status": "OK"
         },
         {
@@ -182,12 +184,12 @@
             "position": "Comprado",
             "weight": 0.04,
             "entry_price": 23.799999237060547,
-            "current_price": 26.829999923706055,
+            "current_price": 26.700000762939453,
             "entry_date": "2026-08-17",
-            "current_date": "2026-09-08",
-            "return": 0.1273109573015152,
-            "contribution": 0.005092438292060608,
-            "pnl": 509.2438292060608,
+            "current_date": "2026-09-09",
+            "return": 0.12184880751437688,
+            "contribution": 0.004873952300575075,
+            "pnl": 487.3952300575075,
             "status": "OK"
         },
         {
@@ -197,12 +199,12 @@
             "position": "Comprado",
             "weight": 0.04,
             "entry_price": 50.18000030517578,
-            "current_price": 56.130001068115234,
+            "current_price": 55.08000183105469,
             "entry_date": "2026-08-17",
-            "current_date": "2026-09-08",
-            "return": 0.11857315119078904,
-            "contribution": 0.004742926047631562,
-            "pnl": 474.29260476315613,
+            "current_date": "2026-09-09",
+            "return": 0.09764849533836095,
+            "contribution": 0.0039059398135344384,
+            "pnl": 390.59398135344384,
             "status": "OK"
         },
         {
@@ -215,9 +217,9 @@
             "current_price": null,
             "entry_date": "2026-08-17",
             "current_date": null,
-            "return": 0.007829795109526971,
-            "contribution": 0.0023489385328580915,
-            "pnl": 234.89385328580914,
+            "return": 0.008353955918331657,
+            "contribution": 0.002506186775499497,
+            "pnl": 250.61867754994972,
             "status": "OK"
         }
     ]
