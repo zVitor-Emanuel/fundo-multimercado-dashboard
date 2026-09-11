@@ -5,9 +5,9 @@ on:
   # 12h00 UTC = 09h00 BRT (antes da abertura)
   # 21h00 UTC = 18h00 BRT (após o fechamento)
   schedule:
-    - cron: "0 12 * * 1-5"
-    - cron: "0 21 * * 1-5"
+    - cron: "0 13-21 * * 1-5"
 
+    
   # ── disparo manual pela aba Actions ────────────────────
   workflow_dispatch:
 
