@@ -1,12 +1,12 @@
 {
-    "timestamp": "2026-09-11T16:56:20.466943",
-    "tese_score": 73.4,
+    "timestamp": "2026-09-11T19:29:16.289155",
+    "tese_score": 74.6,
     "tese_status": "verde",
     "fatores": {
         "desinflacao": {
             "label": "Desinflação",
             "peso": 0.3,
-            "score": 8.32,
+            "score": 8.719999999999999,
             "status": "verde"
         },
         "juros": {
@@ -40,10 +40,10 @@
             "direcao_favoravel": "queda",
             "data_inicial": "2026-06",
             "valor_inicial": 0.0015,
-            "data_atual": "2026-07",
-            "valor_atual": 0.0007,
-            "delta": -0.0008,
-            "sub_score": 9.333333333333334
+            "data_atual": "2026-08",
+            "valor_atual": -0.0032,
+            "delta": -0.0047,
+            "sub_score": 10.0
         },
         "selic_meta": {
             "label": "Selic Meta",
@@ -111,8 +111,8 @@
             "data_inicial": "2026-08-17",
             "valor_inicial": 90.87000274658203,
             "data_atual": "2026-09-11",
-            "valor_atual": 104.80999755859375,
-            "delta": 13.939994812011719,
+            "valor_atual": 105.0,
+            "delta": 14.129997253417969,
             "sub_score": 0.0
         },
         "treasury_10y": {
@@ -121,8 +121,8 @@
             "data_inicial": "2026-08-17",
             "valor_inicial": 0.4723999977111817,
             "data_atual": "2026-09-11",
-            "valor_atual": 0.49490003585815434,
-            "delta": 0.022500038146972656,
+            "valor_atual": 0.4974999904632569,
+            "delta": 0.025099992752075195,
             "sub_score": 0.0
         },
         "ibovespa": {
@@ -131,8 +131,8 @@
             "data_inicial": "2026-08-17",
             "valor_inicial": 166784.0,
             "data_atual": "2026-09-11",
-            "valor_atual": 187426.234375,
-            "delta": 20642.234375,
+            "valor_atual": 186809.921875,
+            "delta": 20025.921875,
             "sub_score": 10.0
         }
     }
