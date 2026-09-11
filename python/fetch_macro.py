@@ -15,7 +15,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 MACRO_FILE = BASE_DIR / "data" / "macro.json"
 
 START_DATE = "2026-08-17"
-END_DATE = datetime.now().strftime("%Y-%m-%d")
+
+from datetime import datetime, timedelta
+END_DATE = (datetime.now() + timedelta(days=1)).strftime("%Y-%m-%d")
 
 
 # Ticker (yfinance) e se o valor precisa de ajuste (ex: ^TNX vem *10)

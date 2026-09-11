@@ -1,13 +1,10 @@
 name: Atualizar dados do fundo
 
 on:
-  # ── disparo automático ──────────────────────────────────
-  # 12h00 UTC = 09h00 BRT (antes da abertura)
-  # 21h00 UTC = 18h00 BRT (após o fechamento)
+  # a cada hora das 10h às 18h BRT (13h–21h UTC), seg a sex
   schedule:
     - cron: "0 13-21 * * 1-5"
 
-    
   # ── disparo manual pela aba Actions ────────────────────
   workflow_dispatch:
 

@@ -14,15 +14,18 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 HISTORY_FILE = BASE_DIR / "data" / "history.json"
 
 START_DATE = "2026-08-17"
-END_DATE = datetime.now().strftime("%Y-%m-%d")
+
+# yfinance usa end exclusivo — somamos 1 dia para incluir hoje
+from datetime import datetime, timedelta
+END_DATE = (datetime.now() + timedelta(days=1)).strftime("%Y-%m-%d")
 
 ASSETS = {
-    "GGBR4": "GGBR4.SA",
-    "PETR4": "PETR4.SA",
-    "ITUB4": "ITUB4.SA",
-    "SBSP3": "SBSP3.SA",
-    "AXIA3": "AXIA3.SA",
-    "USD": "BRL=X",
+    "GGBR4": ["GGBR4.SA"],
+    "PETR4": ["PETR4.SA", "PETR4.SAO"],   # fallback caso um falhe
+    "ITUB4": ["ITUB4.SA"],
+    "SBSP3": ["SBSP3.SA", "SBSP3.SAO"],   # fallback caso um falhe
+    "AXIA3": ["AXIA3.SA"],
+    "USD":   ["BRL=X", "USDBRL=X"],
 }
 
 
@@ -65,20 +68,27 @@ for ticker_key, asset in history["assets"].items():
 # BUSCAR DADOS
 # =========================
 
-for ticker, yf_ticker in ASSETS.items():
+for ticker, yf_tickers in ASSETS.items():
 
     print(f"Buscando histórico de {ticker}...")
 
-    data = yf.download(
-        yf_ticker,
-        start=START_DATE,
-        end=END_DATE,
-        auto_adjust=False,
-        progress=False
-    )
+    data = None
+    for yf_ticker in yf_tickers:
+        tentativa = yf.download(
+            yf_ticker,
+            start=START_DATE,
+            end=END_DATE,
+            auto_adjust=False,
+            progress=False
+        )
+        if not tentativa.empty:
+            data = tentativa
+            print(f"  ticker usado: {yf_ticker}")
+            break
+        print(f"  {yf_ticker}: sem dados, tentando próximo...")
 
-    if data.empty:
-        print(f"  Nenhum dado encontrado para {ticker}")
+    if data is None or data.empty:
+        print(f"  Nenhum dado encontrado para {ticker} (todos os tickers falharam)")
         continue
 
     # =========================

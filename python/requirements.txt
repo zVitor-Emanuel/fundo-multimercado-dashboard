@@ -1,2 +1,4 @@
 yfinance>=1.7.0
 pyield>=0.56.1
+polars>=1.0.0
+pandas>=2.0.0
