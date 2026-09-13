@@ -810,3 +810,119 @@ footer {
     .risk-factors { grid-template-columns: 1fr; }
     .risk-total   { flex-direction: column; align-items: flex-start; }
 }
+
+
+/* =========================================================
+   SELETOR DE DATA / HEADER DIREITO
+   ========================================================= */
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}
+
+.date-selector-wrap {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #171a20;
+    border: 1px solid #252932;
+    border-radius: 6px;
+    padding: 6px 12px;
+    font-size: 12px;
+    color: #9299a5;
+}
+
+.date-selector-wrap label {
+    color: #5a6272;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.date-selector-wrap select {
+    background: transparent;
+    border: none;
+    color: #e8eaed;
+    font-size: 13px;
+    cursor: pointer;
+    outline: none;
+    font-family: inherit;
+}
+
+.date-selector-wrap select option {
+    background: #171a20;
+}
+
+.btn-hoje {
+    background: transparent;
+    border: 1px solid #252932;
+    border-radius: 4px;
+    color: #9299a5;
+    font-size: 11px;
+    padding: 3px 8px;
+    cursor: pointer;
+    transition: all 0.15s;
+}
+
+.btn-hoje:hover {
+    border-color: #60a5fa;
+    color: #60a5fa;
+}
+
+.btn-download {
+    background: #0f291e;
+    border: 1px solid #1a4731;
+    border-radius: 6px;
+    color: #4ade80;
+    font-size: 12px;
+    padding: 7px 14px;
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+}
+
+.btn-download:hover {
+    background: #1a4731;
+}
+
+
+/* =========================================================
+   BANNER MODO HISTÓRICO
+   ========================================================= */
+
+.historical-banner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #1e1a08;
+    border: 1px solid #4a3a10;
+    border-radius: 6px;
+    padding: 10px 20px;
+    margin-bottom: 20px;
+    color: #facc15;
+    font-size: 13px;
+}
+
+.btn-voltar {
+    background: transparent;
+    border: 1px solid #4a3a10;
+    border-radius: 4px;
+    color: #facc15;
+    font-size: 12px;
+    padding: 4px 12px;
+    cursor: pointer;
+    transition: all 0.15s;
+}
+
+.btn-voltar:hover {
+    background: #4a3a10;
+}
+
+.caixa-row td {
+    color: #5a6272;
+    font-style: italic;
+}

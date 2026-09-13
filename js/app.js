@@ -433,3 +433,247 @@ function setText(id, txt) {
    ========================================================= */
 
 loadData();
+
+
+/* =========================================================
+   SELETOR DE DATA — modo histórico
+   ========================================================= */
+
+let selectedDate = null;   // null = hoje (data mais recente)
+
+function initDateSelector() {
+    const sel = document.getElementById("date-selector");
+    if (!sel || !portfolioData) return;
+
+    const datas = Object.keys(portfolioData.daily_history || {}).sort();
+
+    sel.innerHTML = "";
+    datas.forEach(d => {
+        const opt = document.createElement("option");
+        opt.value = d;
+        const [y, m, dia] = d.split("-");
+        opt.textContent = `${dia}/${m}/${y}`;
+        sel.appendChild(opt);
+    });
+
+    // começa na data mais recente
+    sel.value = datas[datas.length - 1];
+    selectedDate = sel.value;
+
+    sel.addEventListener("change", () => {
+        selectedDate = sel.value;
+        const ultima = datas[datas.length - 1];
+        const ehHoje = selectedDate === ultima;
+
+        // banner histórico
+        const banner = document.getElementById("historical-banner");
+        const bannerDate = document.getElementById("banner-date");
+        if (banner) banner.style.display = ehHoje ? "none" : "flex";
+        if (bannerDate) {
+            const [y, m, dia] = selectedDate.split("-");
+            bannerDate.textContent = `${dia}/${m}/${y}`;
+        }
+
+        renderDaySnapshot(selectedDate);
+    });
+}
+
+function voltarParaHoje() {
+    const sel = document.getElementById("date-selector");
+    const datas = Object.keys(portfolioData.daily_history || {}).sort();
+    const ultima = datas[datas.length - 1];
+    sel.value = ultima;
+    selectedDate = ultima;
+    document.getElementById("historical-banner").style.display = "none";
+    renderDaySnapshot(ultima);
+}
+
+
+/* =========================================================
+   RENDER DO DIA SELECIONADO
+   Atualiza header + carteira + attribution com os dados
+   do dia escolhido no seletor.
+   ========================================================= */
+
+function renderDaySnapshot(data) {
+    const dh = (portfolioData.daily_history || {})[data];
+    if (!dh) return;
+
+    const nav      = portfolioData.nav_history[data];
+    const navAnt   = (() => {
+        const datas = Object.keys(portfolioData.nav_history).sort();
+        const idx   = datas.indexOf(data);
+        return idx > 0 ? portfolioData.nav_history[datas[idx - 1]] : portfolioData.initial_nav;
+    })();
+
+    const totalPnl    = nav - portfolioData.initial_nav;
+    const totalReturn = totalPnl / portfolioData.initial_nav;
+    const retDia      = (nav - navAnt) / navAnt;
+
+    // ── header ───────────────────────────────────────────
+    setText("nav",       fmtBRL(nav));
+    setText("return",    fmtPct(totalReturn));
+    setText("daily-pnl", fmtBRL(totalPnl));
+
+    document.getElementById("return").className   = totalReturn >= 0 ? "positive-text" : "negative-text";
+    document.getElementById("daily-pnl").className = totalPnl   >= 0 ? "positive-text" : "negative-text";
+
+    const [y, m, dia] = data.split("-");
+    setText("pnl-period", `até ${dia}/${m}/${y}`);
+
+    // ── carteira ─────────────────────────────────────────
+    const tbody = document.getElementById("portfolio-table");
+    if (!tbody) return;
+    tbody.innerHTML = "";
+
+    portfolioData.positions.forEach(pos => {
+        if (pos.ticker === "CAIXA") return;   // mostra o caixa separado abaixo
+        const snap = dh[pos.ticker];
+        const ok   = snap && snap.pnl !== null;
+        const cls  = ok ? (snap.contribution >= 0 ? "positive-text" : "negative-text") : "";
+
+        const row = document.createElement("tr");
+        row.innerHTML = `
+            <td><strong>${pos.name}</strong><br><small class="ticker-label">${pos.ticker}</small></td>
+            <td>${pos.category}</td>
+            <td>${pos.position}</td>
+            <td>${(pos.weight * 100).toFixed(0)}%</td>
+            <td class="mono">${ok ? fmtPreco(pos.ticker, snap.entry_price) : "—"}</td>
+            <td class="mono">${ok ? fmtPreco(pos.ticker, snap.price)       : "—"}</td>
+            <td class="mono ${cls}">${ok ? fmtPct(snap.return)       : "—"}</td>
+            <td class="mono ${cls}">${ok ? fmtPct(snap.contribution) : "—"}</td>
+            <td class="funcao-label">${FUNCAO_TESE[pos.ticker] || "—"}</td>
+        `;
+        tbody.appendChild(row);
+    });
+
+    // linha caixa
+    const caixaSnap = dh["CAIXA"];
+    if (caixaSnap) {
+        const cls = caixaSnap.contribution >= 0 ? "positive-text" : "negative-text";
+        const row = document.createElement("tr");
+        row.className = "caixa-row";
+        row.innerHTML = `
+            <td><strong>Caixa (CDI)</strong><br><small class="ticker-label">CAIXA</small></td>
+            <td>Caixa</td><td>Aplicado</td>
+            <td>${(portfolioData.positions.find(p=>p.ticker==="CAIXA")?.weight*100||30).toFixed(0)}%</td>
+            <td class="mono">—</td><td class="mono">—</td>
+            <td class="mono ${cls}">${fmtPct(caixaSnap.return)}</td>
+            <td class="mono ${cls}">${fmtPct(caixaSnap.contribution)}</td>
+            <td class="funcao-label">Rendimento CDI</td>
+        `;
+        tbody.appendChild(row);
+    }
+
+    // ── attribution ──────────────────────────────────────
+    renderAttributionForDate(dh);
+}
+
+
+function renderAttributionForDate(dh) {
+    const container = document.getElementById("attribution-bars");
+    if (!container) return;
+
+    const items = Object.entries(dh)
+        .map(([ticker, v]) => ({
+            name: portfolioData.positions.find(p => p.ticker === ticker)?.name || ticker,
+            contribution: v.contribution,
+        }))
+        .filter(x => x.contribution !== null)
+        .sort((a, b) => b.contribution - a.contribution);
+
+    const maxAbs = Math.max(...items.map(p => Math.abs(p.contribution)));
+    container.innerHTML = "";
+
+    items.forEach(item => {
+        const pct  = item.contribution;
+        const isPos = pct >= 0;
+        const barW  = maxAbs > 0 ? Math.abs(pct) / maxAbs * 100 : 0;
+        const row   = document.createElement("div");
+        row.className = "attr-row";
+        row.innerHTML = `
+            <div class="attr-label">${item.name}</div>
+            <div class="attr-bar-wrap">
+                <div class="attr-bar ${isPos ? "attr-pos" : "attr-neg"}"
+                     style="width:${barW.toFixed(1)}%"></div>
+            </div>
+            <div class="attr-value ${isPos ? "positive-text" : "negative-text"}">
+                ${fmtPct(pct)}
+            </div>
+        `;
+        container.appendChild(row);
+    });
+
+    // total
+    const totalEl = document.getElementById("attribution-total");
+    if (totalEl) {
+        const nav   = portfolioData.nav_history[selectedDate];
+        const total = (nav - portfolioData.initial_nav) / portfolioData.initial_nav;
+        totalEl.textContent = fmtPct(total);
+        totalEl.className   = total >= 0 ? "positive-text" : "negative-text";
+    }
+}
+
+
+/* =========================================================
+   DOWNLOAD — planilha CSV com histórico completo
+   ========================================================= */
+
+document.getElementById("btn-download")?.addEventListener("click", downloadCSV);
+document.getElementById("btn-hoje")?.addEventListener("click", voltarParaHoje);
+
+function downloadCSV() {
+    const dh      = portfolioData.daily_history || {};
+    const nh      = portfolioData.nav_history   || {};
+    const tickers = portfolioData.positions.map(p => p.ticker);
+    const datas   = Object.keys(dh).sort();
+
+    // cabeçalho
+    const tickerCols = tickers.flatMap(t => [
+        `${t}_preco`, `${t}_pnl`, `${t}_contrib_pct`
+    ]);
+    const header = ["data", "nav", "retorno_acum_pct", "pnl_acum", ...tickerCols].join(";");
+
+    const linhas = datas.map(data => {
+        const nav      = nh[data] ?? "";
+        const pnlAcum  = nav !== "" ? nav - portfolioData.initial_nav : "";
+        const retAcum  = nav !== "" ? ((nav - portfolioData.initial_nav) / portfolioData.initial_nav * 100).toFixed(4) : "";
+        const snap     = dh[data] || {};
+
+        const cols = tickers.flatMap(t => {
+            const v = snap[t];
+            if (!v) return ["", "", ""];
+            return [
+                v.price   !== null ? v.price.toFixed(4)                    : "",
+                v.pnl     !== null ? v.pnl.toFixed(2)                      : "",
+                v.contribution !== null ? (v.contribution * 100).toFixed(4) : "",
+            ];
+        });
+
+        return [data, nav !== "" ? nav.toFixed(2) : "", retAcum, pnlAcum !== "" ? pnlAcum.toFixed(2) : "", ...cols].join(";");
+    });
+
+    const csv  = [header, ...linhas].join("\n");
+    const blob = new Blob(["\uFEFF" + csv], { type: "text/csv;charset=utf-8;" });
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement("a");
+    a.href     = url;
+    a.download = `kairos_portfolio_${new Date().toISOString().slice(0,10)}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+}
+
+
+/* =========================================================
+   HOOK NO initializeDashboard — adiciona seletor de data
+   ========================================================= */
+
+const _origInit = initializeDashboard;
+// eslint-disable-next-line no-global-assign
+initializeDashboard = function() {
+    _origInit();
+    initDateSelector();
+    // aplica snapshot do dia mais recente para sincronizar tabela
+    const datas = Object.keys(portfolioData.daily_history || {}).sort();
+    if (datas.length) renderDaySnapshot(datas[datas.length - 1]);
+};

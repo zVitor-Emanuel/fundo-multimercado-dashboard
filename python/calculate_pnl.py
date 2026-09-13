@@ -448,13 +448,15 @@ for pos in positions:
 all_dates = sorted(all_dates)
 nav_history = {}
 
+# histórico diário completo: {data: {ticker: {price, pnl, return, contribution}}}
+daily_history = {}
+
 for data_alvo in all_dates:
 
-    nav_dia = INITIAL_NAV
-    data_anterior_global = START_DATE
+    nav_dia   = INITIAL_NAV
+    dia_detail = {}   # detalhes de cada posição nesta data
 
-    # ── caixa acumulado até esta data ─────────────────────
-    # acumula por sub-período respeitando mudanças de Selic
+    # ── caixa ──────────────────────────────────────────────
     pontos_caixa = sorted({START_DATE, data_alvo} | {
         d for d in selic_series if START_DATE <= d <= data_alvo
     })
@@ -464,7 +466,18 @@ for data_alvo in all_dates:
         d1 = pontos_caixa[i + 1]
         n_sub = du_entre(d0, d1)
         fator_caixa *= (1 + cdi_vigente(d0)) ** (n_sub / 252)
-    nav_dia += peso_caixa * (fator_caixa - 1.0)
+
+    caixa_pnl_dia  = peso_caixa * (fator_caixa - 1.0)
+    caixa_ret_dia  = fator_caixa - 1.0
+    nav_dia       += caixa_pnl_dia
+
+    dia_detail["CAIXA"] = {
+        "price":        None,
+        "entry_price":  None,
+        "pnl":          round(caixa_pnl_dia, 2),
+        "return":       caixa_ret_dia,
+        "contribution": caixa_pnl_dia / INITIAL_NAV,
+    }
 
     for pos in positions:
         ticker = pos["ticker"]
@@ -483,23 +496,30 @@ for data_alvo in all_dates:
         qtd      = notional / pu0
 
         if tipo == "di_future":
-            # acumula ajustes diários até data_alvo
             datas_ativo = sorted(d for d in precos if d <= data_alvo)
             pnl_acum = 0.0
             d_prev = START_DATE
             for d in datas_ativo:
                 if d == START_DATE:
                     continue
-                pu_t = precos.get(d)
+                pu_t    = precos.get(d)
                 pu_prev = precos.get(d_prev)
                 if pu_t is None or pu_prev is None:
                     d_prev = d
                     continue
-                n = du_entre(d_prev, d)
+                n   = du_entre(d_prev, d)
                 cdi = cdi_vigente(d_prev)
                 pnl_acum += qtd * (pu_t - pu_prev * (1 + cdi) ** (n / 252))
                 d_prev = d
             nav_dia += pnl_acum
+            pu_atual = precos.get(max(d for d in precos if d <= data_alvo), pu0)
+            dia_detail[ticker] = {
+                "price":        pu_atual,
+                "entry_price":  pu0,
+                "pnl":          round(pnl_acum, 2),
+                "return":       pnl_acum / notional,
+                "contribution": pnl_acum / INITIAL_NAV,
+            }
 
         elif tipo == "ntnb":
             datas_ativo = sorted(d for d in precos if d <= data_alvo)
@@ -507,20 +527,34 @@ for data_alvo in all_dates:
                 continue
             pu_t = precos[datas_ativo[-1]]
             pnl  = qtd * (pu_t - pu0)
-            # cupom NTN-B 2050 vai para caixa em 17/08
             if ticker == "NTNB2050" and data_alvo >= CUPOM_NTNB50_DATA:
                 pnl += CUPOM_NTNB50_PCT * notional
             nav_dia += pnl
+            dia_detail[ticker] = {
+                "price":        pu_t,
+                "entry_price":  pu0,
+                "pnl":          round(pnl, 2),
+                "return":       pnl / notional,
+                "contribution": pnl / INITIAL_NAV,
+            }
 
         else:
-            # equity / fx
             datas_ativo = sorted(d for d in precos if d <= data_alvo)
             if not datas_ativo:
                 continue
-            pu_t = precos[datas_ativo[-1]]
-            nav_dia += notional * ((pu_t / pu0) - 1)
+            pu_t    = precos[datas_ativo[-1]]
+            pnl     = notional * ((pu_t / pu0) - 1)
+            nav_dia += pnl
+            dia_detail[ticker] = {
+                "price":        pu_t,
+                "entry_price":  pu0,
+                "pnl":          round(pnl, 2),
+                "return":       (pu_t / pu0) - 1,
+                "contribution": pnl / INITIAL_NAV,
+            }
 
-    nav_history[data_alvo] = round(nav_dia, 2)
+    nav_history[data_alvo]  = round(nav_dia, 2)
+    daily_history[data_alvo] = dia_detail
 
 
 # ========================================
@@ -570,6 +604,7 @@ portfolio = sanitize({
     "partial_pnl":    partial_pnl,
     "drawdown":       drawdown,
     "nav_history":    nav_history,
+    "daily_history":  daily_history,
     "positions":      results,
 })
 

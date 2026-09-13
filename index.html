@@ -16,13 +16,29 @@
             <h1>FVS CAPITAL</h1>
             <p>KAIROS · FIM Direcional Juros</p>
         </div>
-        <div class="market-status">
-            <span class="status-dot"></span>
-            Monitoramento ativo
+        <div class="header-right">
+            <div class="date-selector-wrap">
+                <label for="date-selector">Data</label>
+                <select id="date-selector"></select>
+                <button id="btn-hoje" class="btn-hoje">Hoje</button>
+            </div>
+            <button id="btn-download" class="btn-download" title="Baixar planilha CSV">
+                ⬇ Planilha
+            </button>
+            <div class="market-status">
+                <span class="status-dot"></span>
+                Monitoramento ativo
+            </div>
         </div>
     </header>
 
     <main>
+
+        <!-- ── BANNER MODO HISTÓRICO ── -->
+        <div id="historical-banner" class="historical-banner" style="display:none">
+            <span>📅 Visualizando dados de <strong id="banner-date"></strong></span>
+            <button onclick="voltarParaHoje()" class="btn-voltar">← Voltar para hoje</button>
+        </div>
 
         <!-- ── RESUMO DO FUNDO ── -->
         <section class="summary-grid">
