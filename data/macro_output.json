@@ -1,6 +1,6 @@
 {
-    "timestamp": "2026-09-13T22:44:19.202983",
-    "tese_score": 75.1,
+    "timestamp": "2026-09-14T18:22:21.570461",
+    "tese_score": 72.7,
     "tese_status": "verde",
     "fatores": {
         "desinflacao": {
@@ -18,7 +18,7 @@
         "cambio_fiscal": {
             "label": "Câmbio / Fiscal",
             "peso": 0.2,
-            "score": 8.560392857142848,
+            "score": 7.337821428571422,
             "status": "verde"
         },
         "externo": {
@@ -50,7 +50,7 @@
             "direcao_favoravel": "queda",
             "data_inicial": "2026-08-17",
             "valor_inicial": 0.14,
-            "data_atual": "2026-09-14",
+            "data_atual": "2026-09-15",
             "valor_atual": 0.14,
             "delta": 0.0,
             "sub_score": 5.0
@@ -60,10 +60,10 @@
             "direcao_favoravel": "queda",
             "data_inicial": "2026-08-17",
             "valor_inicial": 5.2014,
-            "data_atual": "2026-09-11",
-            "valor_atual": 5.0918,
-            "delta": -0.10959999999999948,
-            "sub_score": 8.845714285714271
+            "data_atual": "2026-09-14",
+            "valor_atual": 5.1696,
+            "delta": -0.031799999999999606,
+            "sub_score": 6.622857142857132
         },
         "di_jan27": {
             "label": "DI Jan/27",
@@ -110,9 +110,9 @@
             "direcao_favoravel": "queda",
             "data_inicial": "2026-08-17",
             "valor_inicial": 90.87000274658203,
-            "data_atual": "2026-09-11",
-            "valor_atual": 104.61000061035156,
-            "delta": 13.739997863769531,
+            "data_atual": "2026-09-14",
+            "valor_atual": 105.72000122070312,
+            "delta": 14.849998474121094,
             "sub_score": 0.0
         },
         "treasury_10y": {
@@ -120,9 +120,9 @@
             "direcao_favoravel": "queda",
             "data_inicial": "2026-08-17",
             "valor_inicial": 0.4723999977111817,
-            "data_atual": "2026-09-11",
-            "valor_atual": 0.4974999904632569,
-            "delta": 0.025099992752075195,
+            "data_atual": "2026-09-14",
+            "valor_atual": 0.4956999778747559,
+            "delta": 0.023299980163574208,
             "sub_score": 0.0
         },
         "ibovespa": {
@@ -130,9 +130,9 @@
             "direcao_favoravel": "alta",
             "data_inicial": "2026-08-17",
             "valor_inicial": 166784.0,
-            "data_atual": "2026-09-11",
-            "valor_atual": 187207.0,
-            "delta": 20423.0,
+            "data_atual": "2026-09-14",
+            "valor_atual": 185517.15625,
+            "delta": 18733.15625,
             "sub_score": 10.0
         }
     }
