@@ -126,6 +126,86 @@ def buscar_ntnb(history, datas):
 
 
 # =========================
+# DOL (dólar futuro) — com roll de contrato
+# =========================
+#
+# Diferente do DI1 (vencimento em 2027/2031, não precisa rolar
+# dentro da janela do fundo), o DOL vence mensalmente. Manter
+# uma posição contínua exige trocar de contrato no vencimento.
+#
+# Convenção adotada: usa o contrato corrente (front-month) até
+# sua data de vencimento; no dia seguinte ao vencimento, passa a
+# usar o próximo contrato. O P&L é somado "por perna" (leg): a
+# diferença dia-a-dia dentro de cada contrato, sem comparar o
+# preço do contrato antigo com o novo (que teriam níveis
+# diferentes só pela curva a termo, não por ganho/perda real).
+#
+# Preço do DOL é cotado em R$ por US$ 1.000 — dividimos por 1000
+# para ficar na mesma unidade (R$ por US$ 1) do restante do código.
+
+def buscar_dol(history, datas):
+
+    print("Buscando FUT DOL (com roll mensal de contrato)...")
+
+    ticker = "USD"
+
+    if ticker not in history["assets"]:
+        history["assets"][ticker] = {"type": "dol_future", "prices": {}, "contracts": {}}
+    else:
+        # tipo pode ter sido "fx" (spot) em versões antigas — corrige
+        history["assets"][ticker]["type"] = "dol_future"
+        if "contracts" not in history["assets"][ticker]:
+            history["assets"][ticker]["contracts"] = {}
+
+    # busca o histórico completo de contratos DOL disponíveis
+    df_full = yd.futuro.historico(datas, "DOL")
+
+    df_full = df_full.filter(
+        pl.col("codigo_negociacao").str.starts_with("DOL")
+    )
+
+    contrato_atual = None
+
+    for data in datas:
+
+        date_str = data.strftime("%Y-%m-%d")
+
+        linha_dia = df_full.filter(pl.col("data_referencia") == data)
+
+        if linha_dia.is_empty():
+            continue
+
+        # define o contrato front-month se ainda não escolhido,
+        # ou troca (roll) se o contrato atual já venceu
+        if contrato_atual is None:
+            candidatos = linha_dia.sort("data_vencimento")
+            contrato_atual = candidatos["codigo_negociacao"][0]
+        else:
+            ainda_negociado = linha_dia.filter(
+                pl.col("codigo_negociacao") == contrato_atual
+            )
+            if ainda_negociado.is_empty():
+                candidatos = linha_dia.sort("data_vencimento")
+                novo_contrato = candidatos["codigo_negociacao"][0]
+                print(f"  Roll: {contrato_atual} → {novo_contrato} em {date_str}")
+                contrato_atual = novo_contrato
+
+        linha = linha_dia.filter(
+            pl.col("codigo_negociacao") == contrato_atual
+        )
+
+        if linha.is_empty():
+            continue
+
+        preco = float(linha["preco_ajuste"][0]) / 1000.0
+
+        history["assets"][ticker]["prices"][date_str] = preco
+        history["assets"][ticker]["contracts"][date_str] = contrato_atual
+
+        print(f"  {date_str} [{contrato_atual}]: R$ {preco:.4f}")
+
+
+# =========================
 # MAIN
 # =========================
 
@@ -145,6 +225,7 @@ def main():
 
     buscar_di(history, datas)
     buscar_ntnb(history, datas)
+    buscar_dol(history, datas)
 
     with open(HISTORY_FILE, "w", encoding="utf-8") as file:
 

@@ -36,12 +36,13 @@ correta por tipo de ativo:
   correto.
 
   Cupom NTN-B 2050: 15/08/2026 era sábado → pago em 17/08 (D+1
-  útil). O PU do dia 17/08 já está ex-cupom (pyield publica PU
-  pós-pagamento). O caixa recebe o cupom: adicionamos
-  cupom_R$ = (1.06^0.5 - 1) × PU_entrada / (PU_entrada/VNA_base)
-  de forma simplificada usamos o cupom em % do PU de entrada
-  × qtd, que é a forma mais conservadora e consistente com o
-  dado que temos.
+  útil), que é exatamente START_DATE. O PU de 17/08 publicado
+  pelo pyield/ANBIMA já está ex-cupom (pós-pagamento) — ou seja,
+  o próprio PU_entrada já reflete o desconto do cupom. NÃO
+  adicionamos nada extra: fazer isso conta o cupom duas vezes
+  (bug identificado e corrigido em 13/09 comparando com o
+  relatório oficial do Safra — a variação simples de PU bateu
+  exatamente com o número oficial, sem qualquer ajuste de cupom).
 """
 
 import json
@@ -78,9 +79,48 @@ INITIAL_NAV  = fund["initial_nav"]
 
 
 # ========================================
-# CDI Meta — lido do macro.json
-# Usa o valor mais recente disponível.
+# PROVENTOS (dividendos / JCP) declarados
+# no período — usados para calcular RETORNO
+# TOTAL das ações (preço + provento), não só
+# variação de preço.
+#
+# Sem isso, o dia ex-provento mostra uma queda
+# de preço sem nenhuma contrapartida — subestima
+# o retorno real do acionista.
+#
+# Tratamento: o provento é creditado na data-ex
+# (não na data de pagamento físico, que pode ser
+# meses depois) — é quando o direito é adquirido
+# e o preço da ação já desconta o valor.
+#
+# Fontes (fatos relevantes / SEC 6-K oficiais):
+#  PETR4 — R$1,34814262/ação, data-base 21/08/2026,
+#          ex-direito 24/08/2026. SEC Form 6-K
+#          (pbrfs2q26rs_6k.htm), "Date of shareholder
+#          position 08.21.2026, Total 1.34814262".
+#  GGBR4 — R$0,23/ação, Record Date 08/19/2026,
+#          Ex-Dividend Date 08/20/2026. SEC Form 6-K
+#          (tm2621830d4_ex99-1.htm).
 # ========================================
+
+PROVENTOS = {
+    "PETR4": [
+        {"ex_date": "2026-08-24", "valor": 1.34814262},
+    ],
+    "GGBR4": [
+        {"ex_date": "2026-08-20", "valor": 0.23},
+    ],
+}
+
+
+def proventos_acumulados(ticker: str, ate_data: str) -> float:
+    """Soma (R$/ação) de todos os proventos com data-ex <= ate_data."""
+    total = 0.0
+    for p in PROVENTOS.get(ticker, []):
+        if p["ex_date"] <= ate_data:
+            total += p["valor"]
+    return total
+
 
 # ========================================
 # CDI Meta — série histórica do macro.json
@@ -227,26 +267,87 @@ def pnl_di_futuro(ticker: str, weight: float):
     return pnl_acum, retorno
 
 
-# ========================================
-# P&L NTN-B — variação de PU + cupom
-# ========================================
+def serie_contratos(ticker: str):
+    """Retorna dict {data: codigo_contrato} para ativos com roll (ex: DOL)."""
+    asset = history["assets"].get(ticker)
+    if asset is None:
+        return {}
+    return asset.get("contracts", {})
 
-# Cupom da NTN-B 2050: 15/08/2026 era sábado → pago em 17/08
-# Como é a data de entrada, o PU_entrada já é ex-cupom.
-# Mas o caixa do fundo recebe o cupom → adicionamos ao P&L total.
-# Cupom em % do VNA = (1.06^0.5 - 1) ≈ 2.9563%
-# Aproximamos: cupom_R$ por contrato ≈ 0.029563 × PU_entrada
-# (conservador; o VNA real seria ligeiramente maior)
-CUPOM_NTNB50_DATA  = "2026-08-17"   # data de pagamento (D+1 útil de 15/08)
-CUPOM_NTNB50_PCT   = (1.06 ** 0.5) - 1   # ≈ 2.9563% do VNA
+
+# ========================================
+# P&L DO DOL FUTURO — com roll de contrato
+# ========================================
+#
+# Diferente do DI1: o preço do DOL futuro NÃO é um fator de
+# desconto (PU = notional/(1+i)^t) — é um preço a termo direto.
+# Por isso o ajuste diário é a diferença simples entre os
+# preços de ajuste consecutivos, sem correção de CDI.
+#
+# O contrato vence mensalmente (ver fetch_fixed_income.py).
+# No dia do roll, NÃO comparamos o preço do contrato antigo
+# com o novo (níveis diferentes só pela curva a termo) — a
+# perna nova começa "do zero" a partir do primeiro preço
+# publicado para ela, igual ao tratamento de dado ausente
+# no DI/NTN-B.
+#
+# Quantidade fixa em START_DATE (mantém exposição em dólares
+# constante ao longo dos rolls, sem re-basear no vencimento).
+
+def pnl_dol_futuro(ticker: str, weight: float):
+    """Retorna (pnl_acumulado, retorno_sobre_notional)."""
+    precos    = serie_precos(ticker)
+    contratos = serie_contratos(ticker)
+    if not precos:
+        return None, None
+
+    datas = sorted(precos.keys())
+    preco_entrada = precos.get(START_DATE)
+    if preco_entrada is None:
+        return None, None
+
+    notional = weight * INITIAL_NAV
+    qtd      = notional / preco_entrada
+    pnl_acum = 0.0
+    data_anterior = START_DATE
+
+    for data in datas:
+        if data == START_DATE:
+            continue
+
+        preco_atual = precos[data]
+        preco_prev  = precos.get(data_anterior)
+
+        contrato_atual = contratos.get(data)
+        contrato_prev  = contratos.get(data_anterior)
+
+        # roll de contrato: não compara preços de contratos diferentes
+        if preco_prev is None or (
+            contrato_atual and contrato_prev and contrato_atual != contrato_prev
+        ):
+            data_anterior = data
+            continue
+
+        pnl_acum += qtd * (preco_atual - preco_prev)
+        data_anterior = data
+
+    retorno = pnl_acum / notional
+    return pnl_acum, retorno
+
+
+# ========================================
+# P&L NTN-B — variação simples de PU
+# ========================================
+# O PU do pyield/ANBIMA já embute VNA e já está ex-cupom nas
+# datas em que houve pagamento (ver docstring do módulo).
 
 
 def pnl_ntnb(ticker: str, weight: float):
     """
     Retorna (pnl_acumulado, retorno).
 
-    Para NTN-B: variação de PU é suficiente porque o pyield
-    entrega PU já ponderado pelo VNA. Trata cupom da 2050.
+    Variação de PU é suficiente: o pyield entrega PU já
+    ponderado pelo VNA e já líquido de cupons pagos.
     """
     precos = serie_precos(ticker)
     if not precos:
@@ -259,25 +360,10 @@ def pnl_ntnb(ticker: str, weight: float):
     notional = weight * INITIAL_NAV
     qtd      = notional / pu_entrada
 
-    # Preço mais recente
     datas = sorted(precos.keys())
     pu_atual = precos[datas[-1]]
 
-    pnl_pu = qtd * (pu_atual - pu_entrada)
-
-    # Adiciona cupom NTN-B 2050 ao caixa (recebido em 17/08)
-    cupom_caixa = 0.0
-    if ticker == "NTNB2050":
-        # cupom em R$ = qtd × VNA × 2.9563%
-        # Aproximamos VNA pelo PU_entrada / fator_preco
-        # Como PU_entrada = PU_limpo × VNA, e PU_limpo/VNA ≈ 0.90,
-        # VNA ≈ PU_entrada / 0.90 — mas usamos diretamente:
-        # cupom_R$ = qtd × CUPOM_NTNB50_PCT × PU_entrada / (PU/VNA_ratio)
-        # Mais simples e conservador: cupom = 2.9563% × notional
-        cupom_caixa = CUPOM_NTNB50_PCT * notional
-        print(f"  Cupom NTN-B 2050 (17/08): R$ {cupom_caixa:,.2f}")
-
-    pnl_total = pnl_pu + cupom_caixa
+    pnl_total = qtd * (pu_atual - pu_entrada)
     retorno   = pnl_total / notional
     return pnl_total, retorno
 
@@ -363,9 +449,13 @@ for position in positions:
         pnl, ret = pnl_di_futuro(ticker, weight)
     elif tipo == "ntnb":
         pnl, ret = pnl_ntnb(ticker, weight)
+    elif tipo == "dol_future":
+        pnl, ret = pnl_dol_futuro(ticker, weight)
     else:
-        # equity / fx — variação simples de preço
-        ret = (current_price / entry_price) - 1
+        # equity / fx — variação de preço + proventos (dividendo/JCP)
+        # creditados na data-ex, mesmo que o pagamento físico seja depois
+        provento = proventos_acumulados(ticker, current_date)
+        ret = ((current_price + provento) / entry_price) - 1
         pnl = ret * notional
 
     if pnl is None or ret is None:
@@ -527,8 +617,6 @@ for data_alvo in all_dates:
                 continue
             pu_t = precos[datas_ativo[-1]]
             pnl  = qtd * (pu_t - pu0)
-            if ticker == "NTNB2050" and data_alvo >= CUPOM_NTNB50_DATA:
-                pnl += CUPOM_NTNB50_PCT * notional
             nav_dia += pnl
             dia_detail[ticker] = {
                 "price":        pu_t,
@@ -538,18 +626,49 @@ for data_alvo in all_dates:
                 "contribution": pnl / INITIAL_NAV,
             }
 
+        elif tipo == "dol_future":
+            contratos_ativo = serie_contratos(ticker)
+            datas_ativo = sorted(d for d in precos if d <= data_alvo)
+            pnl_acum = 0.0
+            d_prev = START_DATE
+            for d in datas_ativo:
+                if d == START_DATE:
+                    continue
+                preco_t    = precos.get(d)
+                preco_prev = precos.get(d_prev)
+                contrato_t    = contratos_ativo.get(d)
+                contrato_prev = contratos_ativo.get(d_prev)
+                if preco_t is None or preco_prev is None or (
+                    contrato_t and contrato_prev and contrato_t != contrato_prev
+                ):
+                    d_prev = d
+                    continue
+                pnl_acum += qtd * (preco_t - preco_prev)
+                d_prev = d
+            nav_dia += pnl_acum
+            preco_atual = precos.get(max(d for d in precos if d <= data_alvo), pu0)
+            dia_detail[ticker] = {
+                "price":        preco_atual,
+                "entry_price":  pu0,
+                "pnl":          round(pnl_acum, 2),
+                "return":       pnl_acum / notional,
+                "contribution": pnl_acum / INITIAL_NAV,
+            }
+
         else:
             datas_ativo = sorted(d for d in precos if d <= data_alvo)
             if not datas_ativo:
                 continue
-            pu_t    = precos[datas_ativo[-1]]
-            pnl     = notional * ((pu_t / pu0) - 1)
+            pu_t     = precos[datas_ativo[-1]]
+            provento = proventos_acumulados(ticker, data_alvo)
+            ret_t    = ((pu_t + provento) / pu0) - 1
+            pnl      = notional * ret_t
             nav_dia += pnl
             dia_detail[ticker] = {
                 "price":        pu_t,
                 "entry_price":  pu0,
                 "pnl":          round(pnl, 2),
-                "return":       (pu_t / pu0) - 1,
+                "return":       ret_t,
                 "contribution": pnl / INITIAL_NAV,
             }
 
