@@ -1,5 +1,5 @@
 {
-    "timestamp": "2026-09-15T20:55:47.425865",
+    "timestamp": "2026-09-15T23:26:51.001141",
     "tese_score": 72.9,
     "tese_status": "verde",
     "fatores": {
@@ -111,8 +111,8 @@
             "data_inicial": "2026-08-17",
             "valor_inicial": 90.87000274658203,
             "data_atual": "2026-09-15",
-            "valor_atual": 108.41999816894531,
-            "delta": 17.54999542236328,
+            "valor_atual": 108.38999938964844,
+            "delta": 17.519996643066406,
             "sub_score": 0.0
         },
         "treasury_10y": {
