@@ -1,5 +1,5 @@
 {
-    "timestamp": "2026-09-17T17:30:22.468955",
+    "timestamp": "2026-09-17T21:02:21.246219",
     "tese_score": 72.7,
     "tese_status": "verde",
     "fatores": {
@@ -111,8 +111,8 @@
             "data_inicial": "2026-08-17",
             "valor_inicial": 90.87000274658203,
             "data_atual": "2026-09-17",
-            "valor_atual": 104.62000274658203,
-            "delta": 13.75,
+            "valor_atual": 104.13999938964844,
+            "delta": 13.269996643066406,
             "sub_score": 0.0
         },
         "treasury_10y": {
@@ -121,8 +121,8 @@
             "data_inicial": "2026-08-17",
             "valor_inicial": 0.4723999977111817,
             "data_atual": "2026-09-17",
-            "valor_atual": 0.4954999923706055,
-            "delta": 0.023099994659423806,
+            "valor_atual": 0.49470000267028813,
+            "delta": 0.022300004959106445,
             "sub_score": 0.0
         },
         "ibovespa": {
@@ -131,8 +131,8 @@
             "data_inicial": "2026-08-17",
             "valor_inicial": 166784.0,
             "data_atual": "2026-09-17",
-            "valor_atual": 186517.0,
-            "delta": 19733.0,
+            "valor_atual": 185992.03125,
+            "delta": 19208.03125,
             "sub_score": 10.0
         }
     }
