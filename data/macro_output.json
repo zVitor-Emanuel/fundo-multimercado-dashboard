@@ -1,6 +1,6 @@
 {
-    "timestamp": "2026-09-28T20:00:46.947625",
-    "tese_score": 74.4,
+    "timestamp": "2026-09-29T00:50:51.364386",
+    "tese_score": 74.1,
     "tese_status": "verde",
     "fatores": {
         "desinflacao": {
@@ -24,7 +24,7 @@
         "externo": {
             "label": "Externo",
             "peso": 0.15,
-            "score": 0.9300003051757812,
+            "score": 0.7533340454101562,
             "status": "vermelho"
         },
         "mercado": {
@@ -50,7 +50,7 @@
             "direcao_favoravel": "queda",
             "data_inicial": "2026-08-17",
             "valor_inicial": 0.14,
-            "data_atual": "2026-09-29",
+            "data_atual": "2026-09-30",
             "valor_atual": 0.1375,
             "delta": -0.0025000000000000022,
             "sub_score": 5.0
@@ -111,9 +111,9 @@
             "data_inicial": "2026-08-17",
             "valor_inicial": 90.87000274658203,
             "data_atual": "2026-09-28",
-            "valor_atual": 98.08000183105469,
-            "delta": 7.209999084472656,
-            "sub_score": 1.8600006103515625
+            "valor_atual": 98.61000061035156,
+            "delta": 7.739997863769531,
+            "sub_score": 1.5066680908203125
         },
         "treasury_10y": {
             "label": "US Treasury 10Y",
@@ -131,8 +131,8 @@
             "data_inicial": "2026-08-17",
             "valor_inicial": 166784.0,
             "data_atual": "2026-09-28",
-            "valor_atual": 183174.75,
-            "delta": 16390.75,
+            "valor_atual": 182991.125,
+            "delta": 16207.125,
             "sub_score": 10.0
         }
     }
