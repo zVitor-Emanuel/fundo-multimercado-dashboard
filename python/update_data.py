@@ -15,17 +15,23 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 HISTORY_FILE = BASE_DIR / "data" / "history.json"
 
 START_DATE = "2026-08-17"
-END_DATE   = datetime.now().strftime("%Y-%m-%d")
 
+# yfinance/Yahoo usa end exclusivo — somamos 1 dia para incluir hoje
+END_DATE = (datetime.now() + timedelta(days=1)).strftime("%Y-%m-%d")
+
+# Mantemos TODOS os tickers que já entraram na carteira algum dia,
+# mesmo os que saíram em rebalanceamentos (ex: GGBR4 zerada em
+# setembro) — o histórico de preços continua sendo coletado; o
+# calculate_pnl.py que decide quais tickers usar em cada perna.
 ASSETS = {
     "GGBR4": ["GGBR4.SA"],
     "PETR4": ["PETR4.SA", "PETR4.SAO"],   # fallback caso um falhe
     "ITUB4": ["ITUB4.SA"],
     "SBSP3": ["SBSP3.SA", "SBSP3.SAO"],   # fallback caso um falhe
     "AXIA3": ["AXIA3.SA"],
-    # USD removido daqui — a posição real é FUT DOL, não dólar à
-    # vista. Buscado em fetch_fixed_income.py via pyield (B3),
-    # com roll de contrato mensal e ajuste correto do futuro.
+    "WEGE3": ["WEGE3.SA"],
+    # USD (dólar) não entra aqui — a posição real é FUT DOL, buscada
+    # em fetch_fixed_income.py via pyield (B3), com roll de contrato.
 }
 
 HEADERS = {
@@ -54,18 +60,13 @@ def sanitize(obj):
 # BUSCAR PREÇOS — API JSON crua do Yahoo Finance
 # =========================
 #
-# yfinance.download() já causou pelo menos um caso de fechamento
-# atribuído à data errada — o timestamp que a Yahoo retorna é um
-# epoch UTC, e se não for explicitamente convertido para o fuso
-# de negociação (America/Sao_Paulo) antes de extrair a data, o
-# pregão pode "vazar" para o dia seguinte ou anterior dependendo
-# do horário de corte do fechamento em UTC.
-#
-# Aqui batemos direto na API JSON e fazemos a conversão de fuso
-# manualmente, igual à correção validada por um teste independente
-# que bateu 1:1 com os números oficiais do relatório do Safra.
+# yfinance.download() já atribuiu o fechamento de um pregão à data
+# errada (bug de timezone: epoch UTC não convertido pro fuso do
+# pregão antes de extrair a data). Aqui batemos direto na API JSON
+# e convertemos o timestamp explicitamente pro fuso correto de cada
+# mercado antes de rotular a data.
 
-def buscar_precos_yahoo(ticker: str, range_str: str = "6mo") -> dict:
+def buscar_precos_yahoo(ticker: str, timezone: str, range_str: str = "6mo") -> dict:
 
     url = f"https://query1.finance.yahoo.com/v8/finance/chart/{ticker}?range={range_str}&interval=1d"
 
@@ -88,13 +89,11 @@ def buscar_precos_yahoo(ticker: str, range_str: str = "6mo") -> dict:
         if close is None:
             continue
 
-        # epoch UTC -> data no fuso de São Paulo (é isso que corrige
-        # o problema de fechamento indo pro dia errado)
-        data_sp = (
+        data_local = (
             pd.to_datetime(ts, unit="s", utc=True)
-              .tz_convert("America/Sao_Paulo")
+              .tz_convert(timezone)
         )
-        date_str = data_sp.strftime("%Y-%m-%d")
+        date_str = data_local.strftime("%Y-%m-%d")
 
         if date_str < START_DATE or date_str > END_DATE:
             continue
@@ -127,7 +126,7 @@ for ticker_key, asset in history["assets"].items():
 
 
 # =========================
-# BUSCAR DADOS
+# BUSCAR AÇÕES (fuso de São Paulo — pregão B3)
 # =========================
 
 for ticker, yf_tickers in ASSETS.items():
@@ -139,7 +138,7 @@ for ticker, yf_tickers in ASSETS.items():
 
     for yf_ticker in yf_tickers:
         try:
-            precos = buscar_precos_yahoo(yf_ticker)
+            precos = buscar_precos_yahoo(yf_ticker, timezone="America/Sao_Paulo")
             if precos:
                 ticker_usado = yf_ticker
                 break
@@ -160,6 +159,35 @@ for ticker, yf_tickers in ASSETS.items():
         preco = precos[date_str]
         history["assets"][ticker]["prices"][date_str] = preco
         print(f"  {date_str}: R$ {preco:.2f}")
+
+
+# =========================
+# BUSCAR TREASURY US 10Y (ZN=F — fuso de Chicago, CME)
+# =========================
+#
+# Contrato futuro de Treasury de 10 anos. Posição do fundo é VENDIDA
+# (short) — o sinal é aplicado depois, no calculate_pnl.py, com base
+# no campo "position" do config (não aqui). Aqui só guardamos o
+# preço de mercado, cru, como qualquer outro ativo.
+
+print("Buscando Treasury US 10Y (ZN=F)...")
+
+try:
+    precos_ust = buscar_precos_yahoo("ZN=F", timezone="America/Chicago")
+
+    if precos_ust:
+        if "UST10Y" not in history["assets"]:
+            history["assets"]["UST10Y"] = {"type": "global", "prices": {}}
+
+        for date_str in sorted(precos_ust.keys()):
+            preco = precos_ust[date_str]
+            history["assets"]["UST10Y"]["prices"][date_str] = preco
+            print(f"  {date_str}: US$ {preco:.3f}")
+    else:
+        print("  Nenhum dado encontrado para UST10Y (ZN=F)")
+
+except Exception as error:
+    print(f"  Falha ao buscar UST10Y: {error}")
 
 
 # =========================

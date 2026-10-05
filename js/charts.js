@@ -1,7 +1,7 @@
 /* =========================================================
    KAIROS · FVS Capital — Gráficos
-   Ativo: apenas NAV (linha).
-   Os demais (DI, NTN-B, radar) foram desativados temporariamente.
+   Ativo: apenas NAV (linha). DI/NTN-B/radar desativados
+   temporariamente (canvas causava overflow no layout).
    ========================================================= */
 
 const _charts = {};
@@ -10,8 +10,7 @@ function destroyChart(id) {
     if (_charts[id]) { _charts[id].destroy(); delete _charts[id]; }
 }
 
-// ── paleta ──────────────────────────────────────────────
-const AZUL      = "#60a5fa";
+const AZUL       = "#60a5fa";
 const GRID_COLOR = "rgba(37,41,50,0.8)";
 const TICK_COLOR = "#5a6272";
 
@@ -26,10 +25,6 @@ Chart.defaults.plugins.tooltip.borderWidth     = 1;
 Chart.defaults.plugins.tooltip.titleColor      = "#e8eaed";
 Chart.defaults.plugins.tooltip.bodyColor       = "#9299a5";
 
-
-/* =========================================================
-   NAV DO FUNDO
-   ========================================================= */
 
 function renderNavChart(portfolioData) {
     const nav_history = portfolioData.nav_history || {};
@@ -76,15 +71,10 @@ function renderNavChart(portfolioData) {
             maintainAspectRatio: false,
             interaction: { mode: "index", intersect: false },
             scales: {
-                x: {
-                    grid: { color: GRID_COLOR },
-                    ticks: { maxTicksLimit: 8 },
-                },
+                x: { grid: { color: GRID_COLOR }, ticks: { maxTicksLimit: 8 } },
                 y: {
                     grid: { color: GRID_COLOR },
-                    ticks: {
-                        callback: v => "R$ " + new Intl.NumberFormat("pt-BR").format(Math.round(v)),
-                    },
+                    ticks: { callback: v => "R$ " + new Intl.NumberFormat("pt-BR").format(Math.round(v)) },
                 },
             },
             plugins: {
@@ -103,12 +93,6 @@ function renderNavChart(portfolioData) {
 }
 
 
-/* =========================================================
-   ENTRY POINT — chamado pelo app.js
-   ========================================================= */
-
 function renderAllCharts(portfolioData, macroOutputData, macroRaw) {
     renderNavChart(portfolioData);
-    // renderDiChart, renderNtnbChart, renderRadarChart, renderAttributionChart
-    // desativados — canvas causava overflow; reativar quando o layout estiver pronto
 }
