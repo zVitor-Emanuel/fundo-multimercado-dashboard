@@ -1,18 +1,18 @@
 {
-    "timestamp": "2026-10-06T01:43:53.614626",
-    "tese_score": 79.4,
+    "timestamp": "2026-10-06T18:48:54.505778",
+    "tese_score": 82.1,
     "tese_status": "verde",
     "fatores": {
         "desinflacao": {
             "label": "Desinflação",
             "peso": 0.3,
-            "score": 8.951999999999998,
+            "score": 9.423999999999992,
             "status": "verde"
         },
         "juros": {
             "label": "Ciclo de Juros",
             "peso": 0.25,
-            "score": 8.951999999999998,
+            "score": 9.423999999999992,
             "status": "verde"
         },
         "cambio_fiscal": {
@@ -24,7 +24,7 @@
         "externo": {
             "label": "Externo",
             "peso": 0.15,
-            "score": 0.12999979654947916,
+            "score": 0.1833343505859375,
             "status": "vermelho"
         },
         "mercado": {
@@ -60,9 +60,9 @@
             "direcao_favoravel": "queda",
             "data_inicial": "2026-08-17",
             "valor_inicial": 5.2014,
-            "data_atual": "2026-10-05",
-            "valor_atual": 4.9859,
-            "delta": -0.21549999999999958,
+            "data_atual": "2026-10-06",
+            "valor_atual": 4.9698,
+            "delta": -0.23159999999999936,
             "sub_score": 10.0
         },
         "di_jan27": {
@@ -70,19 +70,19 @@
             "direcao_favoravel": "queda",
             "data_inicial": "2026-08-17",
             "valor_inicial": 0.1377,
-            "data_atual": "2026-10-02",
-            "valor_atual": 0.13532,
-            "delta": -0.0023799999999999932,
-            "sub_score": 7.379999999999994
+            "data_atual": "2026-10-05",
+            "valor_atual": 0.13414,
+            "delta": -0.00355999999999998,
+            "sub_score": 8.559999999999981
         },
         "di_jan31": {
             "label": "DI Jan/31",
             "direcao_favoravel": "queda",
             "data_inicial": "2026-08-17",
             "valor_inicial": 0.14622,
-            "data_atual": "2026-10-02",
-            "valor_atual": 0.1399,
-            "delta": -0.006319999999999992,
+            "data_atual": "2026-10-05",
+            "valor_atual": 0.12654,
+            "delta": -0.019679999999999975,
             "sub_score": 10.0
         },
         "ntnb_2031": {
@@ -90,9 +90,9 @@
             "direcao_favoravel": "queda",
             "data_inicial": "2026-08-17",
             "valor_inicial": 0.08144,
-            "data_atual": "2026-10-02",
-            "valor_atual": 0.075633,
-            "delta": -0.005806999999999993,
+            "data_atual": "2026-10-05",
+            "valor_atual": 0.070382,
+            "delta": -0.011057999999999998,
             "sub_score": 10.0
         },
         "ntnb_2050": {
@@ -100,9 +100,9 @@
             "direcao_favoravel": "queda",
             "data_inicial": "2026-08-17",
             "valor_inicial": 0.075387,
-            "data_atual": "2026-10-02",
-            "valor_atual": 0.071377,
-            "delta": -0.00401,
+            "data_atual": "2026-10-05",
+            "valor_atual": 0.067198,
+            "delta": -0.008189000000000002,
             "sub_score": 10.0
         },
         "brent": {
@@ -111,9 +111,9 @@
             "data_inicial": "2026-08-17",
             "valor_inicial": 90.87000274658203,
             "data_atual": "2026-10-05",
-            "valor_atual": 100.4800033569336,
-            "delta": 9.610000610351562,
-            "sub_score": 0.2599995930989583
+            "valor_atual": 100.31999969482422,
+            "delta": 9.449996948242188,
+            "sub_score": 0.366668701171875
         },
         "treasury_10y": {
             "label": "US Treasury 10Y",
@@ -131,8 +131,8 @@
             "data_inicial": "2026-08-17",
             "valor_inicial": 166784.0,
             "data_atual": "2026-10-05",
-            "valor_atual": 206911.890625,
-            "delta": 40127.890625,
+            "valor_atual": 206912.0,
+            "delta": 40128.0,
             "sub_score": 10.0
         }
     }
