@@ -1,5 +1,5 @@
 {
-    "timestamp": "2026-10-09T15:27:39.043067",
+    "timestamp": "2026-10-09T18:42:05.221004",
     "tese_score": 81.2,
     "tese_status": "verde",
     "fatores": {
@@ -60,9 +60,9 @@
             "direcao_favoravel": "queda",
             "data_inicial": "2026-08-17",
             "valor_inicial": 5.2014,
-            "data_atual": "2026-10-08",
-            "valor_atual": 5.0119,
-            "delta": -0.18949999999999978,
+            "data_atual": "2026-10-09",
+            "valor_atual": 4.9892,
+            "delta": -0.21219999999999928,
             "sub_score": 10.0
         },
         "di_jan27": {
