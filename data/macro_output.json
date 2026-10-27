@@ -1,25 +1,25 @@
 {
-    "timestamp": "2026-10-26T23:36:33.864416",
-    "tese_score": 69.6,
-    "tese_status": "verde",
+    "timestamp": "2026-10-27T18:35:23.225508",
+    "tese_score": 53.7,
+    "tese_status": "amarelo",
     "fatores": {
         "desinflacao": {
             "label": "Desinflação",
             "peso": 0.3,
-            "score": 9.207999999999998,
+            "score": 8.3,
             "status": "verde"
         },
         "juros": {
             "label": "Ciclo de Juros",
             "peso": 0.25,
-            "score": 9.207999999999998,
-            "status": "verde"
+            "score": 4.983999999999998,
+            "status": "amarelo"
         },
         "cambio_fiscal": {
             "label": "Câmbio / Fiscal",
             "peso": 0.2,
-            "score": 4.5,
-            "status": "amarelo"
+            "score": 3.187964285714272,
+            "status": "vermelho"
         },
         "externo": {
             "label": "Externo",
@@ -50,7 +50,7 @@
             "direcao_favoravel": "queda",
             "data_inicial": "2026-08-17",
             "valor_inicial": 0.14,
-            "data_atual": "2026-10-26",
+            "data_atual": "2026-10-27",
             "valor_atual": 0.1375,
             "delta": -0.0025000000000000022,
             "sub_score": 5.0
@@ -60,59 +60,59 @@
             "direcao_favoravel": "queda",
             "data_inicial": "2026-08-17",
             "valor_inicial": 5.2014,
-            "data_atual": "2026-10-26",
-            "valor_atual": 5.5007,
-            "delta": 0.29930000000000057,
-            "sub_score": 0.0
+            "data_atual": "2026-10-27",
+            "valor_atual": 5.3346,
+            "delta": 0.13320000000000043,
+            "sub_score": 1.9085714285714168
         },
         "di_jan27": {
             "label": "DI Jan/27",
             "direcao_favoravel": "queda",
             "data_inicial": "2026-08-17",
             "valor_inicial": 0.1377,
-            "data_atual": "2026-10-23",
-            "valor_atual": 0.13468,
-            "delta": -0.003019999999999995,
-            "sub_score": 8.019999999999996
+            "data_atual": "2026-10-26",
+            "valor_atual": 0.13695,
+            "delta": -0.0007500000000000007,
+            "sub_score": 5.750000000000001
         },
         "di_jan31": {
             "label": "DI Jan/31",
             "direcao_favoravel": "queda",
             "data_inicial": "2026-08-17",
             "valor_inicial": 0.14622,
-            "data_atual": "2026-10-23",
-            "valor_atual": 0.12642,
-            "delta": -0.019799999999999984,
-            "sub_score": 10.0
+            "data_atual": "2026-10-26",
+            "valor_atual": 0.15277,
+            "delta": 0.00655,
+            "sub_score": 0.0
         },
         "ntnb_2031": {
             "label": "NTN-B 2031",
             "direcao_favoravel": "queda",
             "data_inicial": "2026-08-17",
             "valor_inicial": 0.08144,
-            "data_atual": "2026-10-23",
-            "valor_atual": 0.066859,
-            "delta": -0.014580999999999997,
-            "sub_score": 10.0
+            "data_atual": "2026-10-26",
+            "valor_atual": 0.079072,
+            "delta": -0.002367999999999995,
+            "sub_score": 8.946666666666658
         },
         "ntnb_2050": {
             "label": "NTN-B 2050",
             "direcao_favoravel": "queda",
             "data_inicial": "2026-08-17",
             "valor_inicial": 0.075387,
-            "data_atual": "2026-10-23",
-            "valor_atual": 0.064886,
-            "delta": -0.010500999999999996,
-            "sub_score": 10.0
+            "data_atual": "2026-10-26",
+            "valor_atual": 0.075536,
+            "delta": 0.00014900000000001024,
+            "sub_score": 4.751666666666649
         },
         "brent": {
             "label": "Brent",
             "direcao_favoravel": "queda",
             "data_inicial": "2026-08-17",
             "valor_inicial": 90.87000274658203,
-            "data_atual": "2026-10-23",
-            "valor_atual": 116.72000122070312,
-            "delta": 25.849998474121094,
+            "data_atual": "2026-10-26",
+            "valor_atual": 115.80999755859375,
+            "delta": 24.93999481201172,
             "sub_score": 0.0
         },
         "treasury_10y": {
@@ -120,9 +120,9 @@
             "direcao_favoravel": "queda",
             "data_inicial": "2026-08-17",
             "valor_inicial": 0.4723999977111817,
-            "data_atual": "2026-10-23",
-            "valor_atual": 0.498799991607666,
-            "delta": 0.02639999389648434,
+            "data_atual": "2026-10-26",
+            "valor_atual": 0.4986000061035156,
+            "delta": 0.02620000839233394,
             "sub_score": 0.0
         },
         "ibovespa": {
@@ -130,9 +130,9 @@
             "direcao_favoravel": "alta",
             "data_inicial": "2026-08-17",
             "valor_inicial": 166784.0,
-            "data_atual": "2026-10-23",
-            "valor_atual": 205083.0,
-            "delta": 38299.0,
+            "data_atual": "2026-10-26",
+            "valor_atual": 176608.0,
+            "delta": 9824.0,
             "sub_score": 10.0
         }
     }
