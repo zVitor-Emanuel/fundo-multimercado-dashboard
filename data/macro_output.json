@@ -1,6 +1,6 @@
 {
-    "timestamp": "2026-11-20T20:56:56.184189",
-    "tese_score": 50.5,
+    "timestamp": "2026-11-21T02:02:04.494320",
+    "tese_score": 51.5,
     "tese_status": "amarelo",
     "fatores": {
         "desinflacao": {
@@ -24,8 +24,8 @@
         "externo": {
             "label": "Externo",
             "peso": 0.15,
-            "score": 2.9633331298828125,
-            "status": "vermelho"
+            "score": 3.6666666666666665,
+            "status": "amarelo"
         },
         "mercado": {
             "label": "Mercado (Ibovespa)",
@@ -50,7 +50,7 @@
             "direcao_favoravel": "queda",
             "data_inicial": "2026-08-17",
             "valor_inicial": 0.14,
-            "data_atual": "2026-11-20",
+            "data_atual": "2026-11-21",
             "valor_atual": 0.1375,
             "delta": -0.0025000000000000022,
             "sub_score": 5.0
@@ -110,19 +110,19 @@
             "direcao_favoravel": "queda",
             "data_inicial": "2026-08-17",
             "valor_inicial": 90.87000274658203,
-            "data_atual": "2026-11-19",
-            "valor_atual": 91.9800033569336,
-            "delta": 1.1100006103515625,
-            "sub_score": 5.926666259765625
+            "data_atual": "2026-11-20",
+            "valor_atual": 89.87000274658203,
+            "delta": -1.0,
+            "sub_score": 7.333333333333333
         },
         "treasury_10y": {
             "label": "US Treasury 10Y",
             "direcao_favoravel": "queda",
             "data_inicial": "2026-08-17",
             "valor_inicial": 0.4723999977111817,
-            "data_atual": "2026-11-19",
-            "valor_atual": 0.5052000045776367,
-            "delta": 0.03280000686645501,
+            "data_atual": "2026-11-20",
+            "valor_atual": 0.49119997024536133,
+            "delta": 0.018799972534179643,
             "sub_score": 0.0
         },
         "ibovespa": {
