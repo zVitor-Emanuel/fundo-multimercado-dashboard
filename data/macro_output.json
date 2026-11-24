@@ -1,6 +1,6 @@
 {
-    "timestamp": "2026-11-21T02:02:04.494320",
-    "tese_score": 51.5,
+    "timestamp": "2026-11-24T00:37:17.084137",
+    "tese_score": 51.1,
     "tese_status": "amarelo",
     "fatores": {
         "desinflacao": {
@@ -24,13 +24,13 @@
         "externo": {
             "label": "Externo",
             "peso": 0.15,
-            "score": 3.6666666666666665,
+            "score": 4.6633351643880205,
             "status": "amarelo"
         },
         "mercado": {
             "label": "Mercado (Ibovespa)",
             "peso": 0.1,
-            "score": 5.74,
+            "score": 3.76505859375,
             "status": "amarelo"
         }
     },
@@ -50,7 +50,7 @@
             "direcao_favoravel": "queda",
             "data_inicial": "2026-08-17",
             "valor_inicial": 0.14,
-            "data_atual": "2026-11-21",
+            "data_atual": "2026-11-24",
             "valor_atual": 0.1375,
             "delta": -0.0025000000000000022,
             "sub_score": 5.0
@@ -60,9 +60,9 @@
             "direcao_favoravel": "queda",
             "data_inicial": "2026-08-17",
             "valor_inicial": 5.2014,
-            "data_atual": "2026-11-19",
-            "valor_atual": 5.8889,
-            "delta": 0.6875,
+            "data_atual": "2026-11-23",
+            "valor_atual": 5.9708,
+            "delta": 0.7694000000000001,
             "sub_score": 0.0
         },
         "di_jan27": {
@@ -110,19 +110,19 @@
             "direcao_favoravel": "queda",
             "data_inicial": "2026-08-17",
             "valor_inicial": 90.87000274658203,
-            "data_atual": "2026-11-20",
-            "valor_atual": 89.87000274658203,
-            "delta": -1.0,
-            "sub_score": 7.333333333333333
+            "data_atual": "2026-11-23",
+            "valor_atual": 86.87999725341797,
+            "delta": -3.9900054931640625,
+            "sub_score": 9.326670328776041
         },
         "treasury_10y": {
             "label": "US Treasury 10Y",
             "direcao_favoravel": "queda",
             "data_inicial": "2026-08-17",
             "valor_inicial": 0.4723999977111817,
-            "data_atual": "2026-11-20",
-            "valor_atual": 0.49119997024536133,
-            "delta": 0.018799972534179643,
+            "data_atual": "2026-11-23",
+            "valor_atual": 0.49180002212524415,
+            "delta": 0.019400024414062467,
             "sub_score": 0.0
         },
         "ibovespa": {
@@ -130,10 +130,10 @@
             "direcao_favoravel": "alta",
             "data_inicial": "2026-08-17",
             "valor_inicial": 166784.0,
-            "data_atual": "2026-11-19",
-            "valor_atual": 166376.0,
-            "delta": -408.0,
-            "sub_score": 5.74
+            "data_atual": "2026-11-23",
+            "valor_atual": 164796.046875,
+            "delta": -1987.953125,
+            "sub_score": 3.76505859375
         }
     }
 }
